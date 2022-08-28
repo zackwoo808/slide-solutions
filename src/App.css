@@ -34,6 +34,9 @@
   background-color: cyan;
   margin: 0 0 10px 0;
   list-style: none;
+  display: flex;
+  align-items: center;
+  padding: 5px;
 }
 
 .app__info {
