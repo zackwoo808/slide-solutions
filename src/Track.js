@@ -1,7 +1,11 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import IconButton from '@mui/material/IconButton';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
-const Track = ({ text, index, moveListItem }) => {
+const Track = ({ name, musicKey, BPM, runtime, index, moveListItem, onClick }) => {
   // useDrag - the list item is draggable
   const [{ isDragging }, dragRef] = useDrag({
     type: 'item',
@@ -38,9 +42,24 @@ const Track = ({ text, index, moveListItem }) => {
   // Make items being dragged transparent, so it's easier to see where we drop them
   const opacity = isDragging ? 0 : 1
   return (
-    <li ref={dragDropRef} className="app__track" style={{ opacity }}>
-      { text }
-    </li>
+    <ListItem ref={dragDropRef}>
+      <ListItemButton component="button" style={{ opacity }} className="app__track" onClick={ () => alert('hi') } sx={{
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(0, 0, 0, 0.25)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
+      }}>
+        <p>{ name }</p>
+        <p>{ runtime }</p>
+        <p>{ BPM }</p>
+        <p>{ musicKey }</p>
+        <IconButton aria-label="more info" onClick={(e) => {
+          e.stopPropagation();
+          alert('more stuff');
+        }}>
+          <MoreHorizIcon />
+        </IconButton>
+      </ListItemButton>
+    </ListItem>
   );
 }
 

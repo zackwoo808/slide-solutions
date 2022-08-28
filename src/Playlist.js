@@ -1,15 +1,9 @@
 import React, { useState, useCallback } from 'react'
+import List from '@mui/material/List';
 import Track from './Track'
 
-const TRACKS = [
-  { id: 1, name: 'dog' },
-  { id: 2, name: 'cat' },
-  { id: 3, name: 'fish' },
-  { id: 4, name: 'hamster' },
-]
-
-const Playlist = () => {
-  const [tracks, setTracks] = useState(TRACKS)
+const Playlist = ({ userTracks = {} }) => {
+  const [tracks, setTracks] = useState(userTracks)
 
   const moveTrackListItem = useCallback(
     (dragIndex, hoverIndex) => {
@@ -27,15 +21,22 @@ const Playlist = () => {
 )
 
   return (
-      <ul className="app__playlist">{tracks.map((track, index) => (
+      <List className="app__playlist" sx={{
+        padding: '20px',
+        margin: '0 45px 0 0' 
+      }}>
+        {tracks.map((track, index) => (
         <Track
             key={track.id}
             index={index}
-            text={track.name}
+            name={track.name}
+            musicKey={track.musicKey}
+            BPM={track.BPM}
+            runtime={track.runtime}
             moveListItem={moveTrackListItem}
         />
     ))}
-    </ul>
+    </List>
   )
 }
 
