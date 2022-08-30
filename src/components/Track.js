@@ -48,10 +48,10 @@ const Track = ({ name, musicKey, BPM, runtime, index, moveListItem, onClick }) =
         borderTop: '1px solid rgba(0, 0, 0, 0.25)',
         borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
       }}>
-        <p>{ name }</p>
-        <p>{ runtime }</p>
-        <p>{ BPM }</p>
-        <p>{ musicKey }</p>
+        <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ name }</p>
+        <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ runtime }</p>
+        <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ BPM }</p>
+        <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ musicKey }</p>
         <IconButton aria-label="more info" onClick={(e) => {
           e.stopPropagation();
           alert('more stuff');

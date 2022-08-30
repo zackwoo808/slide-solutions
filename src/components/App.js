@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import './App.css';
+import '../App.css';
 import Playlist from './Playlist.js';
 import TrackInfo from './TrackInfo.js';
 import { useState } from 'react';
