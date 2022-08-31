@@ -18,6 +18,8 @@ import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import SlideIcon from './SlideIcon';
 
+import yoshiAvatar from '../yoshi.png';
+
 const pages = ['home', 'library', 'files', 'messages', 'friends'];
 const components = {
   home: HomeIcon,
@@ -148,7 +150,7 @@ const Header = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="yxshimusic" src={ `${yoshiAvatar}` } />
               </IconButton>
             </Tooltip>
             <Menu

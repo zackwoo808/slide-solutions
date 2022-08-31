@@ -7,6 +7,8 @@ import DialogContent from '@mui/material/DialogContent';
 // import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+import logo from '../logo.png';
+
 const TrackInfo = () => {
   const [open, setOpen] = useState(false);
 
@@ -20,6 +22,11 @@ const TrackInfo = () => {
 
   return (
     <div className="app__info">
+      <img
+        className="app__info-logo"
+        src={ `${logo}` }
+        alt="Slide"
+      ></img>
       <Button variant="outlined" onClick={handleClickOpen}>Upload</Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Upload Track</DialogTitle>
