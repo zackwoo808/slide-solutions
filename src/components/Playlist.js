@@ -23,7 +23,6 @@ const Playlist = ({ userTracks = {} }) => {
   return (
       <List className="app__playlist" sx={{
         padding: '20px',
-        margin: '0 45px 0 0' 
       }}>
         {tracks.map((track, index) => (
         <Track

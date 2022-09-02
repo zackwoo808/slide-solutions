@@ -13,13 +13,12 @@
 
 .app__playlist {
   max-height: calc(100vh - 96px);
-  flex-basis: 75%;
   padding: 20px;
-  margin: 0 45px 0 0;
+  margin: 0;
+  width: 100%;
   overflow: scroll;
   border-radius: 35px;
   background-color: #FFFFFF;
-  /* background-image: url('/public/logo.png'); */
   opacity: 0.7;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
@@ -33,7 +32,7 @@
 }
 
 .app__info {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   position: relative;
@@ -65,5 +64,10 @@
   }
   .app__playlist {
     max-height: calc(100vh - 108px);
+    flex-basis: 75%;
+    margin: 0 45px 0 0;
+  }
+  .app__info {
+    display: flex;
   }
 }
