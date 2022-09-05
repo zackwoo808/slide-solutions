@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react'
+import Directory from './Directory.js';
 import List from '@mui/material/List';
 import Track from './Track'
 
@@ -21,9 +22,9 @@ const Playlist = ({ userTracks = {} }) => {
 )
 
   return (
-      <List className="app__playlist" sx={{
-        padding: '20px',
-      }}>
+    <div className="app__playlist">
+      <Directory />
+      <List>
         {tracks.map((track, index) => (
         <Track
             key={track.id}
@@ -34,8 +35,9 @@ const Playlist = ({ userTracks = {} }) => {
             runtime={track.runtime}
             moveListItem={moveTrackListItem}
         />
-    ))}
-    </List>
+      ))}
+      </List>
+    </div>
   )
 }
 

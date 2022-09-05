@@ -1,11 +1,8 @@
-// import logo from './logo.svg';
 import '../App.css';
 import Header from './Header.js';
-import Playlist from './Playlist.js';
-import TrackInfo from './TrackInfo.js';
+import MainSection from './MainSection.js';
+import Sidebar from './Sidebar.js';
 import { useState } from 'react';
-// import { DndProvider } from 'react-dnd'
-// import { HTML5Backend } from 'react-dnd-html5-backend'
 
 const TRACKS = [
   { id: 1, name: 'Fire Chorus', BPM: 120, musicKey: 'G#m', creator: '@yxshimusic', runtime: '1:21' },
@@ -18,15 +15,13 @@ function App() {
   const [currentTrack, setCurrentTrack] = useState();
 
   return (
-    // <DndProvider backend={HTML5Backend}>
-      <div className="app">
-        <Header />
-        <div className="app__wrap">
-          <Playlist userTracks={ TRACKS } onTrackClick={ setCurrentTrack } />
-          <TrackInfo currentTrack={ currentTrack } />
-        </div>
+    <div className="app">
+      <Header />
+      <div className="app__wrap">
+        <MainSection userTracks={ TRACKS } onTrackClick={ setCurrentTrack } />
+        <Sidebar currentTrack={ currentTrack } />
       </div>
-    // </DndProvider>
+    </div>
   );
 }
 

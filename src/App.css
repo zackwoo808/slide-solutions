@@ -12,6 +12,7 @@
 }
 
 .app__playlist {
+  display: flex;
   max-height: calc(100vh - 96px);
   padding: 20px;
   margin: 0;
@@ -62,7 +63,7 @@
   .app__wrap {
     height: calc(100vh - 108px);
   }
-  .app__playlist {
+  html .app__playlist {
     max-height: calc(100vh - 108px);
     flex-basis: 75%;
     margin: 0 45px 0 0;
