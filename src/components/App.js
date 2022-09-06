@@ -8,9 +8,13 @@ import '../App.css';
 import data from '../data/playlists.json';
 
 function App() {
-  const [currentPlaylist, setCurrentPlaylist] = useState({});
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
 
   const onPlaylistClick = (playlist) => {
+    if (!playlist) {
+      return;
+    }
+    
     setCurrentPlaylist(playlist);
   };
 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const Upload = () => {
   const [open, setOpen] = useState(false);
@@ -21,14 +21,17 @@ const Upload = () => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>Upload</Button>
+      <Button variant="outlined" sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '40px'
+        }} onClick={handleClickOpen}>
+        <CloudUploadIcon fontSize='large' />
+        <p>Drag files here, or click to import</p>
+      </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Upload Track</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-          To subscribe to this website, please enter your email address here. We
-          will send updates occasionally.
-        </DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"

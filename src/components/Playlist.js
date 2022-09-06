@@ -5,23 +5,25 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Playlist = ({ name, musicKey, BPM, runtime, onPlaylistClick }) => {
+const Playlist = ({ playlist: { name, musicKey, BPM, runtime, tracks }, onPlaylistClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleClick = (e) => {
+    e.stopPropagation();
+    setAnchorEl(e.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation();
     setAnchorEl(null);
   };
 
   return (
-    <ListItemButton className="app__track" sx={{
+    <ListItemButton className="app__playlist" sx={{
       justifyContent: 'space-between',
       borderTop: '1px solid rgba(0, 0, 0, 0.25)',
       borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
       fontWeight: '700',
-    }} onClick={onPlaylistClick}>
+    }} onClick={() => onPlaylistClick(tracks)}>
       <p style={{ flexBasis: '20%' }}>{ name }</p>
       <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ runtime }</p>
       <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ BPM }</p>

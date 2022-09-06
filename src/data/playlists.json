@@ -12,7 +12,18 @@
               "BPM": 81,
               "musicKey": "B Maj",
               "creator": "@yxshimusic,@nadav",
-              "runtime": "0:12"
+              "runtime": "0:12",
+              "tracks": [
+                {
+                  "name": "Intro 1"
+                }, {
+                  "name": "Intro 2"
+                }, {
+                  "name": "Intro 3"
+                }, {
+                  "name": "Intro 4"
+                }
+              ]
             },
             {
               "id": 2,
@@ -20,7 +31,18 @@
               "BPM": 81,
               "musicKey": "C Min",
               "creator": "",
-              "runtime": "0:21"
+              "runtime": "0:21",
+              "tracks": [
+                {
+                  "name": "Falling 1"
+                }, {
+                  "name": "Falling 2"
+                }, {
+                  "name": "Falling 3"
+                }, {
+                  "name": "Falling 4"
+                }
+              ]
             },
             {
               "id": 3,
@@ -28,7 +50,18 @@
               "BPM": 81,
               "musicKey": "D Maj",
               "creator": "@nadav,@yxshimusic",
-              "runtime": "1:16"
+              "runtime": "1:16",
+              "tracks": [
+                {
+                  "name": "Texts 1"
+                }, {
+                  "name": "Texts 2"
+                }, {
+                  "name": "Texts 3"
+                }, {
+                  "name": "Texts 4"
+                }
+              ]
             },
             {
               "id": 4,
@@ -36,7 +69,18 @@
               "BPM": 81,
               "musicKey": "A Maj",
               "creator": "@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "Current 1"
+                }, {
+                  "name": "Current 2"
+                }, {
+                  "name": "Current 3"
+                }, {
+                  "name": "Current 4"
+                }
+              ]
             },
             {
               "id": 5,
@@ -44,7 +88,18 @@
               "BPM": 81,
               "musicKey": "B Min",
               "creator": "@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "Keeper 1"
+                }, {
+                  "name": "Keeper 2"
+                }, {
+                  "name": "Keeper 3"
+                }, {
+                  "name": "Keeper 4"
+                }
+              ]
             },
             {
               "id": 6,
@@ -52,7 +107,18 @@
               "BPM": 81,
               "musicKey": "Ab Maj",
               "creator": "@nadav,@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "Slide 1"
+                }, {
+                  "name": "Slide 2"
+                }, {
+                  "name": "Slide 3"
+                }, {
+                  "name": "Slide 4"
+                }
+              ]
             },
             {
               "id": 7,
@@ -60,7 +126,18 @@
               "BPM": 81,
               "musicKey": "C Maj",
               "creator": "@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "Waves 1"
+                }, {
+                  "name": "Waves 2"
+                }, {
+                  "name": "Waves 3"
+                }, {
+                  "name": "Waves 4"
+                }
+              ]
             },
             {
               "id": 8,
@@ -68,7 +145,18 @@
               "BPM": 81,
               "musicKey": "C Maj",
               "creator": "@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "Extra 1"
+                }, {
+                  "name": "Extra 2"
+                }, {
+                  "name": "Extra 3"
+                }, {
+                  "name": "Extra 4"
+                }
+              ]
             },
             {
               "id": 9,
@@ -76,7 +164,18 @@
               "BPM": 81,
               "musicKey": "C Maj",
               "creator": "@yxshimusic",
-              "runtime": "0:45"
+              "runtime": "0:45",
+              "tracks": [
+                {
+                  "name": "SC 1"
+                }, {
+                  "name": "SC 2"
+                }, {
+                  "name": "SC 3"
+                }, {
+                  "name": "SC 4"
+                }
+              ]
             }
           ]
         }

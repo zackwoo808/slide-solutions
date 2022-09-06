@@ -12,14 +12,11 @@ const PlaylistGroup = ({ activePlaylists = [], onPlaylistClick }) => {
   return (
     playlists.length ?
       <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
-        {playlists.map((track, index) => (
+        {playlists.map((playlist, index) => (
         <Playlist
-            key={track.id}
+            key={playlist.id}
             index={index}
-            name={track.name}
-            musicKey={track.musicKey}
-            BPM={track.BPM}
-            runtime={track.runtime}
+            playlist={playlist}
             onPlaylistClick={onPlaylistClick}
         />
         ))}
