@@ -79,6 +79,6 @@ const TrackInfo = () => {
       </Dialog>
     </div>
  );
-}
+};
 
 export default TrackInfo;

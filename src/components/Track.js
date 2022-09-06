@@ -82,6 +82,6 @@ const Track = ({ name, musicKey, BPM, runtime, index, moveListItem, onClick }) =
       </ListItem>
     // </ListItem>
   );
-}
+};
 
 export default Track;
