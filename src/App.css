@@ -11,17 +11,20 @@
   background-color: transparent;
 }
 
-.app__playlist {
+.app__main {
   display: flex;
   max-height: calc(100vh - 96px);
   padding: 20px;
   margin: 0;
   width: 100%;
-  overflow: scroll;
   border-radius: 35px;
   background-color: #FFFFFF;
   opacity: 0.7;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.app__playlist {
+  overflow: scroll
 }
 
 .app__track {
@@ -63,7 +66,7 @@
   .app__wrap {
     height: calc(100vh - 108px);
   }
-  html .app__playlist {
+  html .app__main {
     max-height: calc(100vh - 108px);
     flex-basis: 75%;
     margin: 0 45px 0 0;

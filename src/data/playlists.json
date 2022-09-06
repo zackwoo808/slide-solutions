@@ -1,0 +1,89 @@
+{
+  "folders": [
+    {
+      "name": "Personal",
+      "items": [
+        {
+          "name": "Starred",
+          "playlists": [
+            {
+              "id": 1,
+              "name": "Intro",
+              "BPM": 81,
+              "musicKey": "B Maj",
+              "creator": "@yxshimusic,@nadav",
+              "runtime": "0:12"
+            },
+            {
+              "id": 2,
+              "name": "Falling",
+              "BPM": 81,
+              "musicKey": "C Min",
+              "creator": "",
+              "runtime": "0:21"
+            },
+            {
+              "id": 3,
+              "name": "Texts",
+              "BPM": 81,
+              "musicKey": "D Maj",
+              "creator": "@nadav,@yxshimusic",
+              "runtime": "1:16"
+            },
+            {
+              "id": 4,
+              "name": "Current",
+              "BPM": 81,
+              "musicKey": "A Maj",
+              "creator": "@yxshimusic",
+              "runtime": "0:45"
+            },
+            {
+              "id": 5,
+              "name": "Keeper",
+              "BPM": 81,
+              "musicKey": "B Min",
+              "creator": "@yxshimusic",
+              "runtime": "0:45"
+            },
+            {
+              "id": 6,
+              "name": "Slide",
+              "BPM": 81,
+              "musicKey": "Ab Maj",
+              "creator": "@nadav,@yxshimusic",
+              "runtime": "0:45"
+            },
+            {
+              "id": 7,
+              "name": "Waves",
+              "BPM": 81,
+              "musicKey": "C Maj",
+              "creator": "@yxshimusic",
+              "runtime": "0:45"
+            },
+            {
+              "id": 8,
+              "name": "Extra",
+              "BPM": 81,
+              "musicKey": "C Maj",
+              "creator": "@yxshimusic",
+              "runtime": "0:45"
+            },
+            {
+              "id": 9,
+              "name": "Space Cowboy",
+              "BPM": 81,
+              "musicKey": "C Maj",
+              "creator": "@yxshimusic",
+              "runtime": "0:45"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shared"
+    }
+  ]
+}
