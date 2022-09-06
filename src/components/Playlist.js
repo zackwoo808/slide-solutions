@@ -1,30 +1,47 @@
-import { useState, useEffect } from 'react';
-import List from '@mui/material/List';
-import Track from './Track';
+import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import ListItemButton from '@mui/material/ListItemButton';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
-const Playlist = ({ activePlaylists = [] }) => {
-  const [playlists, setPlaylists] = useState(activePlaylists);
-
-  useEffect(() => {
-    setPlaylists(activePlaylists);
-}, [activePlaylists]);
+const Playlist = ({ name, musicKey, BPM, runtime, onPlaylistClick }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
-    playlists.length ?
-      <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
-        {playlists.map((track, index) => (
-        <Track
-            key={track.id}
-            index={index}
-            name={track.name}
-            musicKey={track.musicKey}
-            BPM={track.BPM}
-            runtime={track.runtime}
-        />
-        ))}
-      </List>
-    :
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexBasis: '85%' }}>Select a Playlist to View Contents!</div>
+    <ListItemButton className="app__track" sx={{
+      justifyContent: 'space-between',
+      borderTop: '1px solid rgba(0, 0, 0, 0.25)',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
+      fontWeight: '700',
+    }} onClick={onPlaylistClick}>
+      <p style={{ flexBasis: '20%' }}>{ name }</p>
+      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ runtime }</p>
+      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ BPM }</p>
+      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ musicKey }</p>
+      <IconButton aria-label="more info" onClick={handleClick}>
+        <MoreHorizIcon />
+      </IconButton>
+      <Menu
+      id="basic-menu"
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      MenuListProps={{
+        'aria-labelledby': 'basic-button',
+      }}
+    >
+      <MenuItem onClick={handleClose}>Download</MenuItem>
+      <MenuItem onClick={handleClose}>Share</MenuItem>
+    </Menu>
+    </ListItemButton>
   );
 };
 

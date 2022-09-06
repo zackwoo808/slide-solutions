@@ -1,84 +1,28 @@
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-// import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
+import { useEffect, useState } from 'react';
 import logo from '../logo.png';
+import Upload from './Upload';
 
-const TrackInfo = () => {
-  const [open, setOpen] = useState(false);
+const Sidebar = ({playlist}) => {
+  const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+    setCurrentPlaylist(currentPlaylist);
+  }, [currentPlaylist]);
 
   return (
     <div className="app__info">
-      <img
-        className="app__info-logo"
-        src={ `${logo}` }
-        alt="Slide"
-      ></img>
-      <Button variant="outlined" onClick={handleClickOpen}>Upload</Button>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Upload Track</DialogTitle>
-        <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
-          </DialogContentText> */}
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="musicKey"
-            label="Key"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="BPM"
-            label="BPM"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="runtime"
-            label="Runtime"
-            type="text"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Upload</Button>
-        </DialogActions>
-      </Dialog>
+      <Upload />
+      {Array.isArray(currentPlaylist) ?
+        currentPlaylist.map((track) => <div>track.name</div>)
+        :
+        <img
+          className="app__info-logo"
+          src={ `${logo}` }
+          alt="Slide"
+        ></img>
+      }
     </div>
  );
 };
 
-export default TrackInfo;
+export default Sidebar;

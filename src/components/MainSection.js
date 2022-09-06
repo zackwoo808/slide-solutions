@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Directory from './Directory.js';
-import Playlist from './Playlist.js';
+import PlaylistGroup from './PlaylistGroup.js';
 
-const MainSection = ({ sections = {} }) => {
+const MainSection = ({ sections = {}, onPlaylistClick }) => {
   const [activePlaylists, setActivePlaylists] = useState();
 
   const handlePlaylistSelect = playlists => {
@@ -12,7 +12,7 @@ const MainSection = ({ sections = {} }) => {
   return (
     <div className="app__main">
       <Directory folders={ sections } handlePlaylistSelect={handlePlaylistSelect} />
-      <Playlist activePlaylists={ activePlaylists } />
+      <PlaylistGroup activePlaylists={ activePlaylists } onPlaylistClick={onPlaylistClick} />
     </div>
   );
 };
