@@ -19,11 +19,11 @@ const Playlist = ({ playlist: { name, musicKey, BPM, runtime, tracks }, onPlayli
 
   return (
     <ListItemButton className="app__playlist" sx={{
-      justifyContent: 'space-between',
-      borderTop: '1px solid rgba(0, 0, 0, 0.25)',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
-      fontWeight: '700',
-    }} onClick={() => onPlaylistClick(tracks)}>
+        justifyContent: 'space-between',
+        borderTop: '1px solid rgba(0, 0, 0, 0.25)',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
+        fontWeight: '700',
+      }} onClick={() => onPlaylistClick(tracks)}>
       <p style={{ flexBasis: '20%' }}>{ name }</p>
       <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ runtime }</p>
       <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ BPM }</p>

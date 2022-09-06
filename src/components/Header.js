@@ -17,6 +17,7 @@ import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import SlideIcon from './SlideIcon';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import yoshiAvatar from '../yoshi.png';
 
@@ -146,7 +147,11 @@ const Header = () => {
               );
             })}
           </Box>
-
+          <Box sx={{ flexGrow: 0 }}>
+            <Button>
+              <SearchOutlinedIcon />
+            </Button>
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

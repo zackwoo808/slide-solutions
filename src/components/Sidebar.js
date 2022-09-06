@@ -12,12 +12,16 @@ const Sidebar = ({playlist = []}) => {
   }, [playlist]);
 
   return (
-    <div className="app__info">
+    <div className="app__info" style={{ overflow: 'scroll' }}>
       <Upload />
       {currentPlaylist ?
-            <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
+            <List sx={{ paddingLeft: '10px', width: '100%' }}>
             {currentPlaylist.map((track, index) => (
-              <ListItem key={index}>{track.name}</ListItem>
+              <ListItem key={index} sx={{
+                borderTop: '1px solid rgba(0, 0, 0, 0.25)',
+                borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
+                fontWeight: '700',
+              }}>{track.name}</ListItem>
             ))}
           </List>
         :
