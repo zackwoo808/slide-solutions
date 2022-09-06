@@ -11,6 +11,7 @@ import Collapse from '@mui/material/Collapse';
 
 const NestedFolderList = ({ name, items = [], handlePlaylistSelect }) => {
   const [open, setOpen] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(-1);
 
   const handleClick = () => {
     setOpen(!open);
@@ -29,7 +30,10 @@ const NestedFolderList = ({ name, items = [], handlePlaylistSelect }) => {
             </ListItemButton>
             <Collapse in={open} timeout="auto" unmountOnExit>
               {items.map((item, index) => {
-                return <PlaylistFolder item={item} index={index} handlePlaylistSelect={handlePlaylistSelect} />;
+                return <PlaylistFolder key={index} item={item} index={index} isSelected={selectedFolder === index} handlePlaylistSelect={(playlists) => {
+                  setSelectedFolder(index);
+                  handlePlaylistSelect(playlists);
+                }} />;
               })}
             </Collapse>
           </div>

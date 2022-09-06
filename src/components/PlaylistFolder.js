@@ -7,12 +7,12 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import FolderIcon from '@mui/icons-material/Folder';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
-const PlaylistFolder = ({ item, index, handlePlaylistSelect }) => {
-  const [selected, setSelected] = useState(false);
+const PlaylistFolder = ({ item, index, handlePlaylistSelect, isSelected }) => {
+  const [selected, setSelected] = useState(isSelected);
 
-  // useEffect(() => {
-  //   setSelected(!selected);
-  // }, [selected]);
+  useEffect(() => {
+    setSelected(selected);
+  }, [selected]);
 
   return (
     <List component="div" disablePadding key={index}>
