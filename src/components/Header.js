@@ -60,15 +60,14 @@ const Header = () => {
             color: '#394149',
           }} />
           <Typography
-            variant="h6"
+            variant="h1"
             noWrap
-            component="a"
-            href="/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'Roboto',
               fontWeight: 700,
+              fontSize: '16px',
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',

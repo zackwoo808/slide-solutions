@@ -5,7 +5,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Playlist = ({ playlist: { name, musicKey, BPM, runtime, tracks }, onPlaylistClick }) => {
+const Playlist = ({ index, playlist: { name, musicKey, BPM, runtime, tracks }, onPlaylistClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -18,9 +18,9 @@ const Playlist = ({ playlist: { name, musicKey, BPM, runtime, tracks }, onPlayli
   };
 
   return (
-    <ListItemButton className="app__playlist" sx={{
+    <ListItemButton sx={{
         justifyContent: 'space-between',
-        borderTop: '1px solid rgba(0, 0, 0, 0.25)',
+        borderTop: index === 0 ? '1px solid rgba(0, 0, 0, 0.25)' : 'none',
         borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
         fontWeight: '700',
       }} onClick={() => onPlaylistClick(tracks)}>
