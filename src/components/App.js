@@ -30,7 +30,7 @@ function App() {
         <Header />
         <Routes>
           <Route exact path='/' element={
-            <div className="app__wrap">welcome home, homie.</div>
+            <div className="app__wrap">welcome home, homie!</div>
           }></Route>
           <Route exact path='/library' element={
             <div className="app__wrap">
@@ -39,13 +39,13 @@ function App() {
             </div>
           }></Route>
           <Route exact path='/add-tracks' element={
-              <div className="app__wrap">add some 🔥🔥🔥🔥 tracks</div>
+              <div className="app__wrap">add some 🔥🔥🔥🔥 tracks!</div>
           }></Route>
           <Route exact path='/messages' element={
-              <div className="app__wrap">messages</div>
+              <div className="app__wrap">messages!</div>
           }></Route>
           <Route exact path='/friends' element={
-              <div className="app__wrap">friends</div>
+              <div className="app__wrap">friends!</div>
           }></Route>
         </Routes>
       </div>

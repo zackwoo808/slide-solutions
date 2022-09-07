@@ -108,9 +108,9 @@ const Header = () => {
               {pages.map((page, index) => {
                 const MenuIcon = page.component;
                 return (
-                  <MenuItem key={index} onClick={handleCloseNavMenu}>
+                  <Button component={RouterLink} to={page.route} key={index} sx={{ my: 2, color: '#394149', display: 'flex' }}>
                     <MenuIcon sx={{ color: '#394149' }} />
-                  </MenuItem>
+                  </Button>
                 );
               })}
             </Menu>
