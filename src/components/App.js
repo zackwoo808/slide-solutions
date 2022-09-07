@@ -28,15 +28,26 @@ function App() {
     <Router>
       <div className="app">
         <Header />
-          <Routes>
-            <Route exact path='/' element={<div>hi</div>}></Route>
-            <Route exact path='/library' element={
-              <div className="app__wrap">
-                <MainSection sections={ data.folders } onTrackClick={ setCurrentPlaylist } onPlaylistClick={onPlaylistClick} />
-                <Sidebar playlist={ currentPlaylist } />
-              </div>
-            }></Route>
-          </Routes>
+        <Routes>
+          <Route exact path='/' element={
+            <div className="app__wrap">welcome home, homie.</div>
+          }></Route>
+          <Route exact path='/library' element={
+            <div className="app__wrap">
+              <MainSection sections={ data.folders } onTrackClick={ setCurrentPlaylist } onPlaylistClick={onPlaylistClick} />
+              <Sidebar playlist={ currentPlaylist } />
+            </div>
+          }></Route>
+          <Route exact path='/add-tracks' element={
+              <div className="app__wrap">add some 🔥🔥🔥🔥 tracks</div>
+          }></Route>
+          <Route exact path='/messages' element={
+              <div className="app__wrap">messages</div>
+          }></Route>
+          <Route exact path='/friends' element={
+              <div className="app__wrap">friends</div>
+          }></Route>
+        </Routes>
       </div>
     </Router>
   );
