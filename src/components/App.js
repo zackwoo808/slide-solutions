@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from 'react-router-dom';
+
 import Header from './Header.js';
 import MainSection from './MainSection.js';
 import Sidebar from './Sidebar.js';
@@ -19,13 +25,20 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <Header />
-      <div className="app__wrap">
-        <MainSection sections={ data.folders } onTrackClick={ setCurrentPlaylist } onPlaylistClick={onPlaylistClick} />
-        <Sidebar playlist={ currentPlaylist } />
+    <Router>
+      <div className="app">
+        <Header />
+          <Routes>
+            <Route exact path='/' element={<div>hi</div>}></Route>
+            <Route exact path='/library' element={
+              <div className="app__wrap">
+                <MainSection sections={ data.folders } onTrackClick={ setCurrentPlaylist } onPlaylistClick={onPlaylistClick} />
+                <Sidebar playlist={ currentPlaylist } />
+              </div>
+            }></Route>
+          </Routes>
       </div>
-    </div>
+    </Router>
   );
 }
 

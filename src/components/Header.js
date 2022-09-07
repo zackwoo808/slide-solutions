@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,14 +23,13 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 import yoshiAvatar from '../yoshi.png';
 
-const pages = ['home', 'library', 'files', 'messages', 'friends'];
-const components = {
-  home: HomeIcon,
-  library: LibraryMusicIcon,
-  files: CreateNewFolderIcon,
-  messages: ForumRoundedIcon,
-  friends: PersonAddAltRoundedIcon
-};
+const pages = [
+  {component: HomeIcon, route: '/'},
+  {component: LibraryMusicIcon, route: '/library'},
+  {component: CreateNewFolderIcon, route: '/add-tracks'},
+  {component: ForumRoundedIcon, route: '/messages'},
+  {component: PersonAddAltRoundedIcon, route: '/friends'},
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Header = () => {
@@ -104,10 +105,10 @@ const Header = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((pageName) => {
-                const MenuIcon = components[pageName];
+              {pages.map((page, index) => {
+                const MenuIcon = page.component;
                 return (
-                  <MenuItem key={pageName} onClick={handleCloseNavMenu}>
+                  <MenuItem key={index} onClick={handleCloseNavMenu}>
                     <MenuIcon sx={{ color: '#394149' }} />
                   </MenuItem>
                 );
@@ -133,14 +134,10 @@ const Header = () => {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((pageName) => {
-              const MenuIcon = components[pageName];
+            {pages.map((page, index) => {
+              const MenuIcon = page.component;
               return (
-                <Button
-                  key={pageName}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: '#394149', display: 'flex' }}
-                >
+                <Button component={RouterLink} to={page.route} key={index} sx={{ my: 2, color: '#394149', display: 'flex' }}>
                   <MenuIcon sx={{ color: '#394149' }} />
                 </Button>
               );
