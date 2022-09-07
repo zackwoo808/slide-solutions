@@ -115,24 +115,29 @@ const Header = () => {
               })}
             </Menu>
           </Box>
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href=""
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            LOGO
-          </Typography>
+          <Box sx={{ justifyContent: 'center', flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Typography
+              variant="h1"
+              noWrap
+              component={RouterLink}
+              to="/"
+              sx={{
+                display: 'flex',
+                fontWeight: 700,
+                fontSize: '16px',
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+                alignItems: 'center',
+              }}
+            >
+              <SlideIcon sx={{
+                mr: 1,
+                color: '#394149',
+              }} />
+              <p>Slide</p>
+            </Typography>
+          </Box>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, index) => {
               const MenuIcon = page.component;
