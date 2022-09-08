@@ -12,9 +12,11 @@ import Sidebar from './Sidebar.js';
 import '../App.css';
 
 import data from '../data/playlists.json';
+import { useEffect } from 'react';
 
 function App() {
   const [currentPlaylist, setCurrentPlaylist] = useState();
+  const [welcomeMessage, setWelcomeMessage] = useState();
 
   const onPlaylistClick = (playlist) => {
     if (!playlist) {
@@ -24,13 +26,19 @@ function App() {
     setCurrentPlaylist(playlist);
   };
 
+  useEffect(() => {
+    fetch('/api/welcome-message')
+      .then((res) => res.json())
+      .then(data => setWelcomeMessage(data.message));
+  }, []);
+
   return (
     <Router>
       <div className="app">
         <Header />
         <Routes>
           <Route exact path='/' element={
-            <div className="app__wrap">welcome home, homie!</div>
+            <div className="app__wrap">{welcomeMessage}</div>
           }></Route>
           <Route exact path='/library' element={
             <div className="app__wrap">
