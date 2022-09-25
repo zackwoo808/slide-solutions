@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 function App() {
   const [currentPlaylist, setCurrentPlaylist] = useState();
   const [welcomeMessage, setWelcomeMessage] = useState();
-  const [currentTracks, setCurrentTracks] = useState([]);
+  const [currentTracks, setCurrentTracks] = useState();
 
   const onPlaylistClick = (playlist) => {
     if (!playlist) {
@@ -45,17 +45,19 @@ function App() {
           <Route exact path='/' element={
             <div className="app__wrap app__flex-column">
               <p>{welcomeMessage}</p>
-              {currentTracks.map(trackName => {
-                return (
-                  <>
-                    <div>{trackName}</div>
-                    <audio controls>
-                      <source src={`/audio/${trackName}`} type="audio/mp3" muted />
-                      Your browser does not support the audio tag.
-                    </audio>
-                  </>
-                );
-              })}
+              <ul>
+                {currentTracks?.map(({ title, creators, BPM, musicKey, key }, index) => {
+                  return (
+                    <li key={key} style={{ display: 'flex', alignItems: 'center', backgroundColor: '#FFF' }}>
+                      <audio controls>
+                        <source src={`/audio/${encodeURIComponent(key)}`} type="audio/mp3" muted />
+                        Your browser does not support the audio tag.
+                      </audio>
+                      <div>{title}&nbsp;{creators}&nbsp;{BPM}&nbsp;{musicKey}</div>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
           }></Route>
           <Route exact path='/library' element={

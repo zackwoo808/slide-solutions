@@ -19,7 +19,7 @@ app.get('/audio', async (req, res) => {
     res
       .status(200)
       .json({
-        tracks: tracks?.Contents?.map(item => item.Key)
+        tracks
       });
   } catch (err) {
     console.log(err);
