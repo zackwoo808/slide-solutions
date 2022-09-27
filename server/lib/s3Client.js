@@ -1,5 +1,5 @@
 // Create service client module using ES6 syntax.
-const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { S3Client } = require('@aws-sdk/client-s3');
 // Set the AWS Region.
 const REGION = 'us-west-1';
 // Create an Amazon S3 service client object.

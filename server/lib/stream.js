@@ -1,5 +1,6 @@
-const { s3Client } = require('./s3Client');
 const { GetObjectCommand, ListObjectsCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
+
+const { s3Client } = require('./s3Client');
 
 const BUCKET_NAME = 'slide-solutions-demo';
 
