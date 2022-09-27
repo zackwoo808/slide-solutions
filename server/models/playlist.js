@@ -1,4 +1,4 @@
-const { isArray, mergeWith } = require('lodash');
+const { mergeWith, union } = require('lodash');
 
 const RegExes = {
   FOLDER_STRUCTURE: /([^/])+/g
@@ -9,36 +9,37 @@ function directoryModel(tracks) {
     return {};
   }
 
-  const directory = tracks.reduce((finalDirectory, track) => {
-    const { folderstructure, title } = track;
+  const directory = tracks.reduce((finalModel, track) => {
+    const { folderstructure } = track;
     const levels = folderstructure.match(RegExes.FOLDER_STRUCTURE);
-    const folders = {};
+    const folders = [];
 
     levels.reduce((prevDir, currDir, index, arr) => {
       if (index === arr.length - 1) {
-        prevDir.push(track);
+        prevDir.push({
+          key: currDir,
+          title: currDir,
+          tracks: [track]
+        });
 
-        return prevDir;
+        return prevDir[0].tracks;
       }
 
-      if (index === arr.length - 2) {
-        Object.assign(prevDir, { [currDir]:  [] });
-
-        return prevDir[currDir];
-      }
-
-      Object.assign(prevDir, { [currDir]:  {} });
-      return prevDir[currDir];
+      prevDir.push({
+        key: currDir,
+        title: currDir,
+        content:  []
+      });
+      return prevDir[0].content;
     }, folders);
 
-    return mergeWith({}, finalDirectory, folders, (a, b) => {
-      if (isArray(a)) {
-        return a.concat(b);
+    return mergeWith(finalModel, folders, (a, b, propertyName) => {
+      if (propertyName === 'tracks') {
+        return union(a, b);
       }
     });
-  }, {});
+  }, []);
 
-  console.log(directory);
   return directory;
 }
 

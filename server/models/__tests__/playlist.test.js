@@ -13,16 +13,65 @@ describe('playlist', () => {
 
     it('should return a nested directory from a filepath (Happy Path)', () => {
       const data = [
-        { folderstructure: '/level1/track1', title: 'track1', musickey: 'C#min', BPM: '91', creators: '@yoshithedino, @nadav.wav' },
-        { folderstructure: '/level1/track2', title: 'track2', musickey: 'Amaj', BPM: '120', creators: '@yoshithedino, @nadav.wav' },
+        {
+          bpm: "84",
+          folderstructure: "Personal/Alt-Indie",
+          creators: "@Davwave,@Yoshithedino,@itsjessemason",
+          playlist: "Alt-Indie",
+          title: "Keep",
+          musickey: "Cmin",
+          key: "Alt-Indie/02",
+        },
+        {
+          bpm: "91",
+          folderstructure: "Personal/Alt-Indie",
+          creators: "@ayeitgroh, @nadav.wav",
+          playlist: "Alt-Indie",
+          title: "HYU",
+          musickey: "D#min",
+          key: "Alt-Indie/09 - HYU @ayeitgroh x @nadav.wav D#min BPM91 2M.mp3",
+        },
       ];
       const result = directoryModel(data);
-      const expectedResult = {
-        level1: [
-          { folderstructure: '/level1/track1', title: 'track1', musickey: 'C#min', BPM: '91', creators: '@yoshithedino, @nadav.wav' },
-          { folderstructure: '/level1/track2', title: 'track2', musickey: 'Amaj', BPM: '120', creators: '@yoshithedino, @nadav.wav' },
-        ]
-      };
+      const expectedResult = [
+        {
+          name: 'Personal',
+          items: [
+            {
+              name: 'Starred',
+              playlists: [
+                {
+                  id: 1,
+                  name: 'Alt-Indie',
+                  BPM: 81,
+                  musicKey: "B Maj",
+                  creator: "@yxshimusic,@nadav",
+                  tracks: [
+                    {
+                      bpm: "84",
+                      folderstructure: "Personal/Alt-Indie",
+                      creators: "@Davwave,@Yoshithedino,@itsjessemason",
+                      playlist: "Alt-Indie",
+                      title: "Keep",
+                      musickey: "Cmin",
+                      key: "Alt-Indie/02",
+                    },
+                    {
+                      bpm: "91",
+                      folderstructure: "Personal/Alt-Indie",
+                      creators: "@ayeitgroh, @nadav.wav",
+                      playlist: "Alt-Indie",
+                      title: "HYU",
+                      musickey: "D#min",
+                      key: "Alt-Indie/09 - HYU @ayeitgroh x @nadav.wav D#min BPM91 2M.mp3",
+                    },
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ];
 
       expect(result).toEqual(expectedResult);
     });
