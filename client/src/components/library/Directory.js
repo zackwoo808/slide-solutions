@@ -1,6 +1,5 @@
 import List from '@mui/material/List';
 import NestedFolderList from './NestedFolderList';
-// import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 
 const Directory = ({ folders, handlePlaylistSelect }) => {
   return (

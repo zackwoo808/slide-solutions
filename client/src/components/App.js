@@ -5,9 +5,9 @@ import {
   Route,
 } from 'react-router-dom';
 
-import Header from './Header.js';
-import MainSection from './MainSection.js';
-import Sidebar from './Sidebar.js';
+import Header from './shared/Header.js';
+import MainSection from './library/MainSection.js';
+import Sidebar from './library/Sidebar.js';
 
 import '../App.css';
 
@@ -48,7 +48,7 @@ function App() {
               <ul>
                 {currentTracks?.map(({ title, creators, BPM, musicKey, key }, index) => {
                   return (
-                    <li key={key} style={{ display: 'flex', alignItems: 'center', backgroundColor: '#FFF' }}>
+                    <li key={index} style={{ display: 'flex', alignItems: 'center', backgroundColor: '#FFF' }}>
                       <audio controls>
                         <source src={`/audio/${encodeURIComponent(key)}`} type="audio/mp3" muted />
                         Your browser does not support the audio tag.

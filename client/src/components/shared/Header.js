@@ -18,10 +18,10 @@ import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import SlideIcon from './SlideIcon';
+import SlideIcon from '../library/SlideIcon';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-import yoshiAvatar from '../yoshi.png';
+import yoshiAvatar from '../../yoshi.png';
 
 const pages = [
   {component: HomeIcon, route: '/'},
