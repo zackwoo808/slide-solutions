@@ -5,9 +5,10 @@ import {
   Route,
 } from 'react-router-dom';
 
-import Header from './shared/Header.js';
-import MainSection from './library/MainSection.js';
-import Sidebar from './library/Sidebar.js';
+import Header from './shared/Header';
+import MainSection from './library/MainSection';
+import Sidebar from './library/Sidebar';
+import TestStreaming from './home/TestStreaming';
 
 import '../App.css';
 
@@ -43,22 +44,7 @@ function App() {
         <Header />
         <Routes>
           <Route exact path='/' element={
-            <div className="app__wrap app__flex-column">
-              <p>{welcomeMessage}</p>
-              <ul>
-                {currentTracks?.map(({ title, creators, BPM, musicKey, key }, index) => {
-                  return (
-                    <li key={index} style={{ display: 'flex', alignItems: 'center', backgroundColor: '#FFF' }}>
-                      <audio controls>
-                        <source src={`/audio/${encodeURIComponent(key)}`} type="audio/mp3" muted />
-                        Your browser does not support the audio tag.
-                      </audio>
-                      <div>{title}&nbsp;{creators}&nbsp;{BPM}&nbsp;{musicKey}</div>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+            <TestStreaming welcomeMessage={welcomeMessage} currentTracks={currentTracks} />
           }></Route>
           <Route exact path='/library' element={
             <div className="app__wrap">
