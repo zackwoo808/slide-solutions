@@ -5,7 +5,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Playlist = ({ index, playlist: { name, musicKey, BPM, runtime, tracks }, onPlaylistClick }) => {
+const Track = ({ index, track: { title, musicKey, bpm, creators }, onTrackClick }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -23,10 +23,10 @@ const Playlist = ({ index, playlist: { name, musicKey, BPM, runtime, tracks }, o
         borderTop: index === 0 ? '1px solid rgba(0, 0, 0, 0.25)' : 'none',
         borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
         fontWeight: '700',
-      }} onClick={() => onPlaylistClick(tracks)}>
-      <p style={{ flexBasis: '20%' }}>{ name }</p>
-      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ runtime }</p>
-      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ BPM }</p>
+      }} onClick={() => onTrackClick()}>
+      <p style={{ flexBasis: '20%' }}>{ title }</p>
+      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ creators }</p>
+      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ bpm }</p>
       <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ musicKey }</p>
       <IconButton aria-label="more info" onClick={handleClick}>
         <MoreHorizIcon />
@@ -47,4 +47,4 @@ const Playlist = ({ index, playlist: { name, musicKey, BPM, runtime, tracks }, o
   );
 };
 
-export default Playlist;
+export default Track;

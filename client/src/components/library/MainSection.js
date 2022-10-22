@@ -1,18 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Directory from './Directory.js';
-import PlaylistGroup from './PlaylistGroup.js';
+import PlaylistTracks from './PlaylistTracks.js';
 
-const MainSection = ({ sections = {}, onPlaylistClick }) => {
-  const [activePlaylists, setActivePlaylists] = useState();
+const MainSection = ({ playlists, onPlaylistClick, currentPlaylist }) => {
+  const [activePlaylist, setActivePlaylist] = useState();
 
-  const handlePlaylistSelect = playlists => {
-    setActivePlaylists(playlists);
+  const handlePlaylistSelect = id => {
+    setActivePlaylist(id);
+    fetch(`/playlists/${id}/tracks`)
+      .then(res => res.json())
+      .then((data) => {
+        setActivePlaylist(data);
+      })
+      .catch(e => console.log(e));
   };
+
+  useEffect(() => {
+    setActivePlaylist(currentPlaylist);
+  }, [currentPlaylist]);
 
   return (
     <div className="app__main">
-      <Directory folders={ sections } handlePlaylistSelect={handlePlaylistSelect} />
-      <PlaylistGroup activePlaylists={ activePlaylists } onPlaylistClick={onPlaylistClick} />
+      <Directory playlists={ playlists } handlePlaylistSelect={ handlePlaylistSelect } />
+      <PlaylistTracks activePlaylist={ activePlaylist } onPlaylistClick={onPlaylistClick} />
     </div>
   );
 };

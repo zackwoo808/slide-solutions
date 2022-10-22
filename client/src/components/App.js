@@ -7,18 +7,16 @@ import {
 
 import Header from './shared/Header';
 import MainSection from './library/MainSection';
-import Sidebar from './library/Sidebar';
-import TestStreaming from './home/TestStreaming';
 
 import '../App.css';
 
-import data from '../data/playlists.json';
 import { useEffect } from 'react';
 
 function App() {
   const [currentPlaylist, setCurrentPlaylist] = useState();
   const [welcomeMessage, setWelcomeMessage] = useState();
-  const [currentTracks, setCurrentTracks] = useState();
+  // const [currentTracks, setCurrentTracks] = useState();
+  const [currentPlaylists, setCurrentPlaylists] = useState();
 
   const onPlaylistClick = (playlist) => {
     if (!playlist) {
@@ -33,9 +31,10 @@ function App() {
       .then((res) => res.json())
       .then(data => setWelcomeMessage(data.message));
 
-    fetch('/audio')
+    const queryParams = new URLSearchParams(window.location.search);
+    fetch(`/playlists/${queryParams.get('userId')}`)
       .then(res => res.json())
-      .then(data => setCurrentTracks(data?.tracks));
+      .then(data => setCurrentPlaylists(data?.playlists));
   }, []);
 
   return (
@@ -44,15 +43,18 @@ function App() {
         <Header />
         <Routes>
           <Route exact path='/' element={
-            <TestStreaming welcomeMessage={welcomeMessage} currentTracks={currentTracks} />
+              <div className="app__wrap">{ welcomeMessage }</div>
           }></Route>
-          <Route exact path='/library' element={
+          <Route exact path='/playlists' element={
             <div className="app__wrap">
-              <MainSection sections={ data.folders } onTrackClick={ setCurrentPlaylist } onPlaylistClick={onPlaylistClick} />
-              <Sidebar playlist={ currentPlaylist } />
+              <MainSection
+                playlists={ currentPlaylists }
+                onPlaylistClick={ onPlaylistClick }
+                currentPlaylist={currentPlaylist}
+              />
             </div>
           }></Route>
-          <Route exact path='/add-tracks' element={
+          <Route exact path='/tracks' element={
               <div className="app__wrap">add some 🔥🔥🔥🔥 tracks!</div>
           }></Route>
           <Route exact path='/messages' element={

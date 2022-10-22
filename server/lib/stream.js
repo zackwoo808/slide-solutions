@@ -1,18 +1,16 @@
-const { GetObjectCommand, ListObjectsCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
+const { GetObjectCommand } = require('@aws-sdk/client-s3');
 
 const { s3Client } = require('./s3Client');
-
-const BUCKET_NAME = 'slide-solutions-demo';
+const sql = require('./db');
 
 async function getTrack(trackName) {
   const command = new GetObjectCommand({
-    Bucket: BUCKET_NAME,
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
     Key: trackName,
     ResponseContentType: 'stream',
     Range: 'bytes 16561-8065611',
   });
 
-  let response;
   try {
     return await s3Client.send(command);
   } catch (err) {
@@ -20,30 +18,37 @@ async function getTrack(trackName) {
   }
 }
 
-async function getTrackMetadata(key) {
-  const metadataCommand = new HeadObjectCommand({
-    Bucket: BUCKET_NAME,
-    Key: key
-  });
-  const metadata = await s3Client.send(metadataCommand);
-
-  return {
-    ...metadata?.Metadata,
-    key,
-  };
-};
-
-async function getAllTracks(trackName) {
-  const command = new ListObjectsCommand({
-    Bucket: BUCKET_NAME
-  });
-
-  let response;
+async function getAllPlaylists(user_id = 2) {
   try {
-    const tracks = await s3Client.send(command);
-    const promiseArray = tracks?.Contents?.map(track => getTrackMetadata(track.Key));
-    const response = await Promise.all(promiseArray);
-    return response;
+    const playlists = await sql`
+      select *
+      from public.playlists as p
+      where p.user_id = ${user_id}
+    `;
+
+    return playlists;
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+async function getAllPlaylistTracks(playlistId) {
+  try {
+    const playlistTracks = await sql`
+      select 
+        t.id,
+        t.user_id,
+        t.s3_key,
+        t.title,
+        t.bpm,
+        t.creators,
+        t.music_key
+      from public.tracks as t
+      join public.playlist_to_track as p2t
+      on p2t.track_id = t.id and p2t.playlist_id = ${playlistId}
+    `;
+
+    return playlistTracks;
   } catch (err) {
     throw new Error(err);
   }
@@ -51,5 +56,6 @@ async function getAllTracks(trackName) {
 
 module.exports = {
   getTrack,
-  getAllTracks,
+  getAllPlaylists,
+  getAllPlaylistTracks,
 };

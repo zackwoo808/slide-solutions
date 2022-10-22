@@ -3,11 +3,8 @@ import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import FolderIcon from '@mui/icons-material/Folder';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
-const PlaylistFolder = ({ item, index, handlePlaylistSelect, isSelected }) => {
+const PlaylistButton = ({ item, index, handlePlaylistSelect, isSelected }) => {
   const [selected, setSelected] = useState(isSelected);
 
   useEffect(() => {
@@ -22,13 +19,10 @@ const PlaylistFolder = ({ item, index, handlePlaylistSelect, isSelected }) => {
         }
         handlePlaylistSelect(item.playlists);
       }}>
-        <ListItemIcon sx={{ minWidth: 'unset', marginRight: '5px' }}>
-          {selected ? <FolderOpenIcon /> : <FolderIcon />}
-        </ListItemIcon>
         <ListItemText primary={item.name} />
       </ListItemButton>
     </List>
   );
 };
 
-export default PlaylistFolder;
+export default PlaylistButton;

@@ -1,7 +1,11 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { getTrack, getAllTracks } = require('./lib/stream');
+const {
+  getTrack,
+  getAllPlaylists,
+  getAllPlaylistTracks,
+} = require('./lib/stream');
 
 const PORT = process.env.PORT || 3001;
 
@@ -13,14 +17,31 @@ app.get('/api/welcome-message', (req, res) => {
   res.json({ message: 'welcome home, homie!' });
 });
 
-app.get('/audio', async (req, res) => {
+app.get('/playlists/:userId', async (req, res) => {
+  const { userId } = req.params;
   try {
-    const tracks = await getAllTracks();
+    const playlists = await getAllPlaylists(userId);
     res
       .status(200)
       .json({
-        tracks
+        playlists
       });
+  } catch (err) {
+    console.log(err);
+    res
+      .status(500)
+      .json(err);
+  }
+});
+
+app.get('/playlists/:playlistId/tracks', async (req, res) => {
+  const { playlistId } = req.params;
+
+  try {
+    const tracks = await getAllPlaylistTracks(playlistId);
+    res
+      .status(200)
+      .json(tracks);
   } catch (err) {
     console.log(err);
     res

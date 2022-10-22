@@ -1,7 +1,8 @@
 import List from '@mui/material/List';
-import NestedFolderList from './NestedFolderList';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 
-const Directory = ({ folders, handlePlaylistSelect }) => {
+const Directory = ({ playlists, handlePlaylistSelect }) => {
   return (
     <List
       sx={{ borderRight: '2px solid grey', flexBasis: '15%', overflow: 'clip' }}
@@ -9,13 +10,18 @@ const Directory = ({ folders, handlePlaylistSelect }) => {
       aria-labelledby='nested-sub-header'
       subheader='Playlists'
     >
-      {folders.map((folder, index) => {
-        return <NestedFolderList
-          name={folder.name}
-          items={folder.items}
-          handlePlaylistSelect={handlePlaylistSelect}
-          key={index}
-        />;
+      {playlists?.map(({ id, title }, index) => {
+        return (
+          <ListItemButton
+            onClick={() => {
+              handlePlaylistSelect(id);
+            }}
+            sx={{ paddingLeft: '20px' }}
+            key={ index }
+          >
+            <ListItemText primary={ title } />
+          </ListItemButton>
+        );
       })}
     </List>
   );
