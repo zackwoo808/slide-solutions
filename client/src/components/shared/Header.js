@@ -25,8 +25,8 @@ import yoshiAvatar from '../../yoshi.png';
 
 const pages = [
   {component: HomeIcon, route: '/'},
-  {component: LibraryMusicIcon, route: '/library'},
-  {component: CreateNewFolderIcon, route: '/add-tracks'},
+  {component: LibraryMusicIcon, route: '/playlists'},
+  {component: CreateNewFolderIcon, route: '/tracks'},
   {component: ForumRoundedIcon, route: '/messages'},
   {component: PersonAddAltRoundedIcon, route: '/friends'},
 ];
