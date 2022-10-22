@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Directory from './Directory.js';
 import PlaylistTracks from './PlaylistTracks.js';
 
-const MainSection = ({ playlists, onPlaylistClick, currentPlaylist }) => {
+const Playlists = ({ playlists, onPlaylistClick, currentPlaylist }) => {
   const [activePlaylist, setActivePlaylist] = useState();
 
   const handlePlaylistSelect = id => {
@@ -27,4 +27,4 @@ const MainSection = ({ playlists, onPlaylistClick, currentPlaylist }) => {
   );
 };
 
-export default MainSection;
+export default Playlists;

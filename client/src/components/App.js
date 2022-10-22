@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Header from './shared/Header';
-import MainSection from './library/MainSection';
+import Playlists from './library/Playlists';
 
 import '../App.css';
 
@@ -32,7 +32,7 @@ function App() {
       .then(data => setWelcomeMessage(data.message));
 
     const queryParams = new URLSearchParams(window.location.search);
-    fetch(`/playlists/${queryParams.get('userId')}`)
+    fetch(`/playlists/${queryParams.get('userId') || 2}`)
       .then(res => res.json())
       .then(data => setCurrentPlaylists(data?.playlists));
   }, []);
@@ -47,7 +47,7 @@ function App() {
           }></Route>
           <Route exact path='/playlists' element={
             <div className="app__wrap">
-              <MainSection
+              <Playlists
                 playlists={ currentPlaylists }
                 onPlaylistClick={ onPlaylistClick }
                 currentPlaylist={currentPlaylist}
