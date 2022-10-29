@@ -29,7 +29,7 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
       key={index}
     >
       <audio controls>
-        <source src={`/audio/${encodeURIComponent(s3_key)}`} type="audio/mp3" muted />
+        <source src={`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${encodeURIComponent(s3_key)}`} type="audio/mp3" muted />
         Your browser does not support the audio tag.
       </audio>
       <p style={{ flexBasis: '20%' }}>{ title }</p>

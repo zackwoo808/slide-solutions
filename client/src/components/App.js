@@ -27,14 +27,16 @@ function App() {
   };
 
   useEffect(() => {
-    fetch('/api/welcome-message')
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/api/welcome-message`)
       .then((res) => res.json())
-      .then(data => setWelcomeMessage(data.message));
+      .then(data => setWelcomeMessage(data.message))
+      .catch(err => console.log(err));
 
     const queryParams = new URLSearchParams(window.location.search);
-    fetch(`/playlists/${queryParams.get('userId') || 2}`)
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
       .then(res => res.json())
-      .then(data => setCurrentPlaylists(data?.playlists));
+      .then(data => setCurrentPlaylists(data?.playlists))
+      .catch(err => console.log(err));
   }, []);
 
   return (

@@ -1,3 +1,4 @@
+const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const {
@@ -11,6 +12,9 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://slide-solutions.surge.sh', 'http://slide-solutions.surge.sh']
+}));
 
 app.get('/api/welcome-message', (req, res) => {
   res.json({ message: 'welcome home, homie!' });

@@ -7,12 +7,12 @@ const Playlists = ({ playlists, onPlaylistClick, currentPlaylist }) => {
 
   const handlePlaylistSelect = id => {
     setActivePlaylist(id);
-    fetch(`/playlists/${id}/tracks`)
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
       .then(res => res.json())
       .then((data) => {
         setActivePlaylist(data);
       })
-      .catch(e => console.log(e));
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
