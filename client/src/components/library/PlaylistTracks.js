@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
-import Playlist from './Playlist';
+import Track from './Track';
 
-const PlaylistGroup = ({ activePlaylists = [], onPlaylistClick }) => {
-  const [playlists, setPlaylists] = useState(activePlaylists);
+const PlaylistTracks = ({ activePlaylist, onPlaylistClick }) => {
+  const [tracks, setTracks] = useState(activePlaylist);
 
   useEffect(() => {
-    setPlaylists(activePlaylists);
-}, [activePlaylists]);
+    setTracks(activePlaylist);
+}, [activePlaylist]);
 
   return (
-    playlists.length ?
+    tracks?.length ?
       <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
-        {playlists.map((playlist, index) => (
-        <Playlist
-            key={playlist.id}
+        {tracks?.map((track, index) => (
+        <Track
+            key={track.id}
             index={index}
-            playlist={playlist}
+            track={track}
             onPlaylistClick={onPlaylistClick}
         />
         ))}
@@ -26,4 +26,4 @@ const PlaylistGroup = ({ activePlaylists = [], onPlaylistClick }) => {
   );
 };
 
-export default PlaylistGroup;
+export default PlaylistTracks;

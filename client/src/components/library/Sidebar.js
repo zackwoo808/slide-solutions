@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import logo from '../logo.png';
+import logo from '../../logo.png';
 import Upload from './Upload';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
