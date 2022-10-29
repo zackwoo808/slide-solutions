@@ -2,7 +2,6 @@
   "name": "slide-solutions",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
@@ -20,6 +19,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "npm run start",
     "build": "react-scripts build; cp build/index.html build/200.html;",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
