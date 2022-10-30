@@ -53,10 +53,10 @@ app.get('/playlists/:playlistId/tracks', async (req, res) => {
   }
 });
 
-app.get('/audio/:trackName', async (req, res) => {
+app.get('/audio/:trackKey', async (req, res) => {
   try {
-    const { params: { trackName } } = req;
-    const response = await getTrack(trackName);
+    const { params: { trackKey } } = req;
+    const response = await getTrack(trackKey);
 
     const {
       Body: stream,

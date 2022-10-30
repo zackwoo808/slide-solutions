@@ -3,10 +3,10 @@ const { GetObjectCommand } = require('@aws-sdk/client-s3');
 const { s3Client } = require('./s3Client');
 const sql = require('./db');
 
-async function getTrack(trackName) {
+async function getTrack(trackKey) {
   const command = new GetObjectCommand({
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: trackName,
+    Key: trackKey,
     ResponseContentType: 'stream',
     Range: 'bytes 16561-8065611',
   });
