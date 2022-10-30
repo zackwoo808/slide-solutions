@@ -44,11 +44,11 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
         <PlayCircleIcon />
       </IconButton>
       <p style={{ flexBasis: '10%' }}>{ title }</p>
-      <div style={{ flexBasis: '10%' }}>
-        <p style={{ maxHeight: '20px', width: '150px', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>{ creators }</p>
+      <div style={{ flexBasis: '30%' }}>
+        <div style={{ maxHeight: '20px', maxWidth: '250px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{ creators }</div>
       </div>
-      <p style={{ flexBasis: '10%' }}>{ bpm }</p>
-      <p style={{ flexBasis: '10%' }}>{ music_key }</p>
+      <p style={{ flexBasis: '5%' }}>{ bpm }</p>
+      <p style={{ flexBasis: '5%' }}>{ music_key }</p>
       <IconButton aria-label="more info" onClick={handleClick}>
         <MoreHorizIcon />
       </IconButton>
