@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Howl } from 'howler';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
 import PauseIcon from '@mui/icons-material/Pause';
-import PlayCircleIcon from '@mui/icons-material/PlayCircle';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
@@ -14,17 +14,35 @@ import '../../stylesheets/Player.css';
 const Player = ({ playlist, currentTrack, isDisabled }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
-  const [playingTrack, setPlayingTrack] = useState(currentTrack);
+  // const [playingTrack, setPlayingTrack] = useState(currentTrack);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    setCurrentPlaylist(playlist);
+  }, [playlist]);
   
-  function playPause(src) {
-    // setPlayingTrack(new Howl({
-    //   src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${currentPlaylist[currentTrackIndex]?.s3_key}`,
-    //   html5: true
-    // }));
+  function playPause(index) {
+    let track;
+    index = typeof index === 'number' ? index : currentTrackIndex;
+    const data = currentPlaylist[index];
+
+    if (data.howl) {
+      track = data.howl;
+    } else {
+      track = data.howl = new Howl({
+        src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${currentPlaylist[currentTrackIndex]?.s3_key}`,
+        html5: true,
+        onplay: () => {
+          setIsPlaying(true);
+        },
+        onpause: () => {
+          setIsPlaying(false);
+        }
+      });
+    }
     
-    // playingTrack.play();
-    setIsPlaying(!isPlaying);
+    isPlaying ? track.pause() : track.play();
+    setCurrentTrackIndex(index);
     // document.querySelectorAll('.js-track-play-pause')
   }
   
@@ -37,7 +55,7 @@ const Player = ({ playlist, currentTrack, isDisabled }) => {
         <Button aria-label="play/pause playlist" disabled={ isDisabled } onClick={playPause}>
           {isPlaying
             ? <PauseIcon />
-            : <PlayCircleIcon />}
+            : <PlayArrowIcon />}
         </Button>
         <Button aria-label="next track" disabled={ isDisabled } onClick={() => {}}><SkipNextIcon /></Button>
       </ButtonGroup>
