@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
-import Player from '../shared/Player';
+import '../../stylesheets/Track.css';
 
+import PauseIcon from '@mui/icons-material/Pause';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
@@ -10,6 +11,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTrackClick }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -32,20 +34,28 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
         fontSize: '16px',
         height: '60px',
       }}
-      // onClick={() => onTrackClick()}
       key={index}
     >
       <IconButton
-        className="js-play-pause"
-        is-playing="false"
+        id="js-track-play-pause"
         aria-label="play/pause track"
-        onClick={() => Player.playPause([`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${encodeURIComponent(s3_key)}`]) }
+        onClick={() => {
+          setIsPlaying(!isPlaying);
+          // onTrackClick(index, s3_key);
+        }}
       >
-        <PlayCircleIcon />
+        {isPlaying
+          ? <PauseIcon />
+          : <PlayCircleIcon />}
       </IconButton>
-      <p style={{ flexBasis: '10%' }}>{ title }</p>
+      <p title={ title } style={{ flexBasis: '10%' }}>{ title }</p>
       <div style={{ flexBasis: '30%' }}>
-        <div style={{ maxHeight: '20px', maxWidth: '250px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{ creators }</div>
+        <div
+          style={{ maxHeight: '20px', maxWidth: '250px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+          title={ creators }
+        >
+          { creators }
+        </div>
       </div>
       <p style={{ flexBasis: '5%' }}>{ bpm }</p>
       <p style={{ flexBasis: '5%' }}>{ music_key }</p>

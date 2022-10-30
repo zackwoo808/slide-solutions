@@ -13,18 +13,8 @@ import '../stylesheets/App.css';
 import { useEffect } from 'react';
 
 function App() {
-  const [currentPlaylist, setCurrentPlaylist] = useState();
   const [welcomeMessage, setWelcomeMessage] = useState();
-  // const [currentTracks, setCurrentTracks] = useState();
   const [currentPlaylists, setCurrentPlaylists] = useState();
-
-  const onPlaylistClick = (playlist) => {
-    if (!playlist) {
-      return;
-    }
-    
-    setCurrentPlaylist(playlist);
-  };
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/api/welcome-message`)
@@ -51,8 +41,6 @@ function App() {
             <div className="app__wrap">
               <Playlists
                 playlists={ currentPlaylists }
-                onPlaylistClick={ onPlaylistClick }
-                currentPlaylist={currentPlaylist}
               />
             </div>
           }></Route>

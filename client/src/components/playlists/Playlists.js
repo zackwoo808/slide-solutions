@@ -4,15 +4,17 @@ import Player from '../shared/Player';
 import Directory from './Directory.js';
 import PlaylistTracks from './PlaylistTracks.js';
 
-const Playlists = ({ playlists, onPlaylistClick, currentPlaylist }) => {
+const Playlists = ({ playlists, currentPlaylist }) => {
   const [activePlaylist, setActivePlaylist] = useState();
+  const [currentTrack, setCurrentTrack] = useState();
+  const [isPlayerDisabled, setIsPlayerDisabled] = useState(true);
 
   const handlePlaylistSelect = id => {
-    setActivePlaylist(id);
     fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
-      .then(res => res.json())
-      .then((data) => {
+    .then(res => res.json())
+    .then((data) => {
         setActivePlaylist(data);
+        setIsPlayerDisabled(false);
       })
       .catch(err => console.log(err));
   };
@@ -24,8 +26,8 @@ const Playlists = ({ playlists, onPlaylistClick, currentPlaylist }) => {
   return (
     <div className="app__main">
       <Directory playlists={ playlists } handlePlaylistSelect={ handlePlaylistSelect } />
-      <PlaylistTracks activePlaylist={ activePlaylist } onPlaylistClick={onPlaylistClick} />
-      <Player />
+      <PlaylistTracks activePlaylist={ activePlaylist } onTrackClick={ setCurrentTrack } />
+      <Player playlist={ activePlaylist } currentTrack={ currentTrack } isDisabled={ isPlayerDisabled } />
     </div>
   );
 };

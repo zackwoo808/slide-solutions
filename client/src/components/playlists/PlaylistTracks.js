@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import List from '@mui/material/List';
 import Track from './Track';
 
-const PlaylistTracks = ({ activePlaylist, onPlaylistClick }) => {
+const PlaylistTracks = ({ activePlaylist, onTrackClick }) => {
   const [tracks, setTracks] = useState(activePlaylist);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const PlaylistTracks = ({ activePlaylist, onPlaylistClick }) => {
             key={track.id}
             index={index}
             track={track}
-            onPlaylistClick={onPlaylistClick}
+            onTrackClick={onTrackClick}
         />
         ))}
       </List>
