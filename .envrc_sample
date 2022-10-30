@@ -1,0 +1,12 @@
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=
+export AWS_DEFAULT_REGION=
+export AWS_S3_BUCKET_NAME=
+
+export REACT_APP_AWS_EC2_ENDPOINT=
+
+export PGDATABASE=
+export PGUSER=
+export PGPASSWORD=
+export PGHOST=
+export PGPORT=
