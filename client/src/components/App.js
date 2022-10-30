@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom';
 
 import Header from './shared/Header';
-import Playlists from './library/Playlists';
+import Playlists from './playlists/Playlists';
 
-import '../App.css';
+import '../stylesheets/App.css';
 
 import { useEffect } from 'react';
 

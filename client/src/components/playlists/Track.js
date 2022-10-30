@@ -1,6 +1,10 @@
 import { useState } from 'react';
+
+import Player from '../shared/Player';
+
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from '@mui/material/IconButton';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItem from '@mui/material/ListItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,24 +22,33 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
   };
 
   return (
-    <ListItemButton
+    <ListItem
       sx={{
+        display: 'flex',
         justifyContent: 'space-between',
         borderTop: index === 0 ? '1px solid rgba(0, 0, 0, 0.25)' : 'none',
         borderBottom: '1px solid rgba(0, 0, 0, 0.25)',
         fontWeight: '700',
+        fontSize: '16px',
+        height: '60px',
       }}
-      onClick={() => onTrackClick()}
+      // onClick={() => onTrackClick()}
       key={index}
     >
-      <audio controls>
-        <source src={`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${encodeURIComponent(s3_key)}`} type="audio/mp3" muted />
-        Your browser does not support the audio tag.
-      </audio>
-      <p style={{ flexBasis: '20%' }}>{ title }</p>
-      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ creators }</p>
-      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ bpm }</p>
-      <p style={{ flexBasis: '20%', textAlign: 'center' }}>{ music_key }</p>
+      <IconButton
+        className="js-play-pause"
+        is-playing="false"
+        aria-label="play/pause track"
+        onClick={() => Player.playPause([`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${encodeURIComponent(s3_key)}`]) }
+      >
+        <PlayCircleIcon />
+      </IconButton>
+      <p style={{ flexBasis: '10%' }}>{ title }</p>
+      <div style={{ flexBasis: '10%' }}>
+        <p style={{ maxHeight: '20px', width: '150px', overflow: 'hidden', whiteSpace: 'no-wrap', textOverflow: 'ellipsis' }}>{ creators }</p>
+      </div>
+      <p style={{ flexBasis: '10%' }}>{ bpm }</p>
+      <p style={{ flexBasis: '10%' }}>{ music_key }</p>
       <IconButton aria-label="more info" onClick={handleClick}>
         <MoreHorizIcon />
       </IconButton>
@@ -51,7 +64,7 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
       <MenuItem onClick={handleClose}>Download</MenuItem>
       <MenuItem onClick={handleClose}>Share</MenuItem>
     </Menu>
-    </ListItemButton>
+    </ListItem>
   );
 };
 

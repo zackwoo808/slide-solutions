@@ -1,0 +1,21 @@
+.player {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: teal;
+  height: 100px;
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
+}
+
+.player__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 20%;
+}

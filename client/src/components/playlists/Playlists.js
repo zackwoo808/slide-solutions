@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+
+import Player from '../shared/Player';
 import Directory from './Directory.js';
 import PlaylistTracks from './PlaylistTracks.js';
 
@@ -23,6 +25,7 @@ const Playlists = ({ playlists, onPlaylistClick, currentPlaylist }) => {
     <div className="app__main">
       <Directory playlists={ playlists } handlePlaylistSelect={ handlePlaylistSelect } />
       <PlaylistTracks activePlaylist={ activePlaylist } onPlaylistClick={onPlaylistClick} />
+      <Player />
     </div>
   );
 };
