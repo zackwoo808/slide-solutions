@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 
-import Player from '../shared/Player';
+// import Player from '../shared/Player';
 import Directory from './Directory.js';
 import PlaylistTracks from './PlaylistTracks.js';
 
 const Playlists = ({ playlists, currentPlaylist }) => {
   const [activePlaylist, setActivePlaylist] = useState();
-  const [currentTrack, setCurrentTrack] = useState();
   const [isPlayerDisabled, setIsPlayerDisabled] = useState(true);
 
   const handlePlaylistSelect = id => {
@@ -26,8 +25,10 @@ const Playlists = ({ playlists, currentPlaylist }) => {
   return (
     <div className="app__main">
       <Directory playlists={ playlists } handlePlaylistSelect={ handlePlaylistSelect } />
-      <PlaylistTracks activePlaylist={ activePlaylist } onTrackClick={ setCurrentTrack } />
-      <Player playlist={ activePlaylist } currentTrack={ currentTrack } isDisabled={ isPlayerDisabled } />
+      <PlaylistTracks
+        activePlaylist={ activePlaylist }
+        isPlayerDisabled={ isPlayerDisabled }
+      />
     </div>
   );
 };

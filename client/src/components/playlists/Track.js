@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import '../../stylesheets/Track.css';
 
@@ -10,8 +10,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTrackClick }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const Track = ({ index, track: { title, music_key, bpm, creators }, onTrackClick, isTrackPaused }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (e) => {
@@ -40,13 +39,12 @@ const Track = ({ index, track: { title, music_key, bpm, creators, s3_key }, onTr
         id="js-track-play-pause"
         aria-label="play/pause track"
         onClick={() => {
-          setIsPlaying(!isPlaying);
-          // onTrackClick(index, s3_key);
+          onTrackClick(index);
         }}
       >
-        {isPlaying
-          ? <PauseIcon />
-          : <PlayCircleIcon />}
+        {isTrackPaused
+          ? <PlayCircleIcon />
+          : <PauseIcon />}
       </IconButton>
       <p title={ title } style={{ flexBasis: '10%' }}>{ title }</p>
       <div style={{ flexBasis: '30%' }}>

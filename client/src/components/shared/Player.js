@@ -1,9 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Howl } from 'howler';
 
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
-
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
@@ -11,17 +10,27 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
 import '../../stylesheets/Player.css';
 
-const Player = ({ playlist, currentTrack, isDisabled }) => {
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
-  // const [playingTrack, setPlayingTrack] = useState(currentTrack);
-  const [isPlaying, setIsPlaying] = useState(false);
+const Player = ({
+  currentPlaylist,
+  currentTrackIndex,
+  isDisabled,
+  isPlaying,
+  setCurrentTrackIndex,
+  setIsPlaying
+}) => {
+  const isMounted = useRef(false);
+  const [currentTrack, setCurrentTrack] = useState({});
 
   useEffect(() => {
-    setCurrentPlaylist(playlist);
-  }, [playlist]);
-  
-  function playPause(index) {
+    if (isMounted.current) {
+      pause();
+      play(currentTrackIndex);
+    } else {
+      isMounted.current = true;
+    }
+  }, [currentTrackIndex]);
+
+  function getTrack(index) {
     let track;
     index = typeof index === 'number' ? index : currentTrackIndex;
     const data = currentPlaylist[index];
@@ -30,7 +39,7 @@ const Player = ({ playlist, currentTrack, isDisabled }) => {
       track = data.howl;
     } else {
       track = data.howl = new Howl({
-        src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${currentPlaylist[currentTrackIndex]?.s3_key}`,
+        src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${currentPlaylist[index]?.s3_key}`,
         html5: true,
         onplay: () => {
           setIsPlaying(true);
@@ -40,10 +49,18 @@ const Player = ({ playlist, currentTrack, isDisabled }) => {
         }
       });
     }
-    
-    isPlaying ? track.pause() : track.play();
+
+    setCurrentTrack(track);
     setCurrentTrackIndex(index);
-    // document.querySelectorAll('.js-track-play-pause')
+    return track;
+  }
+
+  function play(index) {
+    getTrack(index).play();
+  }
+
+  function pause() {
+    currentTrack?.pause && currentTrack.pause();
   }
   
   return(
@@ -52,11 +69,13 @@ const Player = ({ playlist, currentTrack, isDisabled }) => {
         boxShadow: 'none',
       }}>
         <Button aria-label="previous track" disabled={ isDisabled } onClick={() => {}}><SkipPreviousIcon /></Button>
-        <Button aria-label="play/pause playlist" disabled={ isDisabled } onClick={playPause}>
-          {isPlaying
-            ? <PauseIcon />
-            : <PlayArrowIcon />}
-        </Button>
+        {isPlaying
+          ? <Button aria-label="pause playlist" disabled={ isDisabled } onClick={pause}>
+              <PauseIcon />
+            </Button>
+          : <Button aria-label="play button" disabled={ isDisabled } onClick={play}>
+              <PlayArrowIcon />
+            </Button>}
         <Button aria-label="next track" disabled={ isDisabled } onClick={() => {}}><SkipNextIcon /></Button>
       </ButtonGroup>
     </div>
