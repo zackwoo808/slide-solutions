@@ -23,5 +23,5 @@ This project hosts the client and server code necessary to run the demo app for 
 - ```npm run dev``` will start the react client on port 3000.
 
 ## Optional Dependencies
-### ```Localstack``` and ```Docker``` https://github.com/localstack/localstack)
+### ```Localstack``` and ```Docker``` (https://github.com/localstack/localstack)
 - This will provide you with a local instance of AWS S3 for free bucket creation/customization.
