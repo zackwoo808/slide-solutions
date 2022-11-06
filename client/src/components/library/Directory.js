@@ -10,11 +10,11 @@ const Directory = ({ playlists, handlePlaylistSelect }) => {
       aria-labelledby='nested-sub-header'
       subheader='Playlists'
     >
-      {playlists?.map(({ id, title }, index) => {
+      {playlists?.map(({ playlist_id, title }, index) => {
         return (
           <ListItemButton
             onClick={() => {
-              handlePlaylistSelect(id);
+              handlePlaylistSelect(playlist_id);
             }}
             sx={{ paddingLeft: '20px' }}
             key={ index }

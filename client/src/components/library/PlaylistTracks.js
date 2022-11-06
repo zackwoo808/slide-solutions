@@ -14,7 +14,7 @@ const PlaylistTracks = ({ activePlaylist, onPlaylistClick }) => {
       <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
         {tracks?.map((track, index) => (
         <Track
-            key={track.id}
+            key={track.track_id}
             index={index}
             track={track}
             onPlaylistClick={onPlaylistClick}
