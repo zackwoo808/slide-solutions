@@ -5,7 +5,7 @@ import Upload from './Upload';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-const Sidebar = ({playlist}) => {
+export default function Sidebar({playlist}) {
   const [currentPlaylist, setCurrentPlaylist] = useState(playlist);
 
   useEffect(() => {
@@ -35,5 +35,3 @@ const Sidebar = ({playlist}) => {
     </div>
  );
 };
-
-export default Sidebar;

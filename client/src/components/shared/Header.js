@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -32,9 +32,9 @@ const pages = [
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+export default function Header() {
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -187,5 +187,3 @@ const Header = () => {
     </AppBar>
   );
 };
-
-export default Header;

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Directory from './Directory.js';
 import PlaylistTracks from './PlaylistTracks.js';
 
-const Playlists = () => {
+export default function Playlists() {
   const dispatch = useDispatch();
   const activePlaylist = useSelector(state => state.activePlaylist);
   const isPlayerDisabled = useSelector(state => state.isPlayerDisabled);
@@ -39,5 +39,3 @@ const Playlists = () => {
     </div>
   );
 };
-
-export default Playlists;

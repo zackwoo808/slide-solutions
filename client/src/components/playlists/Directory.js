@@ -2,7 +2,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-const Directory = ({ playlists, handlePlaylistSelect }) => {
+export default function Directory({ playlists, handlePlaylistSelect }) {
   return (
     <List
       sx={{ borderRight: '2px solid grey', flexBasis: '15%', overflow: 'clip' }}
@@ -26,5 +26,3 @@ const Directory = ({ playlists, handlePlaylistSelect }) => {
     </List>
   );
 };
-
-export default Directory;

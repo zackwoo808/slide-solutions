@@ -11,7 +11,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-const Track = ({ index, track: { title, music_key, bpm, creators }, onPause, onPlay }) => {
+export default function Track({ index, track: { title, music_key, bpm, creators }, onPause, onPlay }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
@@ -76,5 +76,3 @@ const Track = ({ index, track: { title, music_key, bpm, creators }, onPause, onP
     </ListItem>
   );
 };
-
-export default Track;
