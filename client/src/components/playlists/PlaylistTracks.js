@@ -19,6 +19,7 @@ export default function PlaylistTracks() {
     setActiveSoundsPlaylist(activePlaylist.map(() => ({})));
   }, [activePlaylist]);
 
+  // #region helper methods
   function getTrack(index) {
     let track;
     index = typeof index === 'number' ? index : currentTrackIndex;
@@ -38,7 +39,9 @@ export default function PlaylistTracks() {
     setCurrentTrack(track);
     return track;
   }
+  // #endregion helper methods
 
+  // #region player methods
   function onPlay(index) {
     if (index !== currentTrackIndex) {
       if (currentTrack) {
@@ -64,6 +67,27 @@ export default function PlaylistTracks() {
     currentTrack.pause();
     dispatch({ type: 'TOGGLE_PLAYER_PLAYING', isPlaying: false });
   }
+
+  function onNext() {
+    let newIndex = 0;
+    if (currentTrack) {
+      newIndex = currentTrackIndex === activePlaylist.length - 1 ? 0 : currentTrackIndex + 1;
+    } 
+
+    onPlay(newIndex);
+    dispatch({ type: 'UPDATE_CURRENT_TRACK_INDEX', index: newIndex });
+  }
+
+  function onPrev() {
+    let newIndex = activePlaylist.length - 1;
+    if (currentTrack) {
+      newIndex = currentTrackIndex === 0 ? activePlaylist.length - 1 : currentTrackIndex - 1;
+    }
+
+    onPlay(newIndex);
+    dispatch({ type: 'UPDATE_CURRENT_TRACK_INDEX', index: newIndex });
+  }
+  // #endregion player methods
   
   return (
     <>
@@ -89,6 +113,8 @@ export default function PlaylistTracks() {
         setCurrentTrack={setCurrentTrack}
         onPlay={onPlay}
         onPause={onPause}
+        onPrev={onPrev}
+        onNext={onNext}
       />
     </>
   );
