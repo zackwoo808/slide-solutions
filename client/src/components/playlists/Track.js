@@ -45,13 +45,11 @@ export default function Track({ index, track: { title, music_key, bpm, creators 
           : <PlayCircleIcon />}
       </IconButton>
       <p title={ title } style={{ flexBasis: '10%' }}>{ title }</p>
-      <div style={{ flexBasis: '30%' }}>
-        <div
-          style={{ maxHeight: '20px', maxWidth: '250px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
-          title={ creators }
-        >
-          { creators }
-        </div>
+     <div
+        style={{ maxHeight: '20px', width: '250px', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}
+        title={ creators }
+      >
+        { creators }
       </div>
       <p style={{ flexBasis: '5%' }}>{ bpm }</p>
       <p style={{ flexBasis: '5%' }}>{ music_key }</p>
