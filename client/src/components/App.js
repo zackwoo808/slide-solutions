@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,22 +12,16 @@ import '../stylesheets/App.css';
 
 import { useEffect } from 'react';
 
-function App() {
-  const [welcomeMessage, setWelcomeMessage] = useState();
-  const [currentPlaylists, setCurrentPlaylists] = useState();
+export default function App() {
+  const dispatch = useDispatch();
+  const welcomeMessage = useSelector(state => state.welcomeMessage);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/api/welcome-message`)
       .then((res) => res.json())
-      .then(data => setWelcomeMessage(data.message))
+      .then(data => dispatch({ type: 'SET_WELCOME_MESSAGE', message: data.message }))
       .catch(err => console.log(err));
-
-    const queryParams = new URLSearchParams(window.location.search);
-    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
-      .then(res => res.json())
-      .then(data => setCurrentPlaylists(data?.playlists))
-      .catch(err => console.log(err));
-  }, []);
+  });
 
   return (
     <Router>
@@ -39,9 +33,7 @@ function App() {
           }></Route>
           <Route exact path='/playlists' element={
             <div className="app__wrap">
-              <Playlists
-                playlists={ currentPlaylists }
-              />
+              <Playlists />
             </div>
           }></Route>
           <Route exact path='/tracks' element={
@@ -57,6 +49,4 @@ function App() {
       </div>
     </Router>
   );
-}
-
-export default App;
+};
