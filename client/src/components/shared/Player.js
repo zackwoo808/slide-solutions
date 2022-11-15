@@ -22,11 +22,11 @@ export default function Player({
   return(
     <div className="player">
       <ButtonGroup variant="contained" className='player__buttons' sx={{ boxShadow: 'none' }}>
-        <Button aria-label="previous track" disabled={ isPlayerDisabled } onClick={onPrev}><SkipPreviousIcon /></Button>
+        <Button aria-label="previous track" disabled={ isPlayerDisabled } onClick={onPrev} sx={{ marginRight: '5px' }}><SkipPreviousIcon /></Button>
         {isPlaying
           ? <Button aria-label="pause playlist" disabled={ isPlayerDisabled } onClick={onPause}><PauseIcon /></Button>
           : <Button aria-label="play button" disabled={ isPlayerDisabled } onClick={() => onPlay(currentTrackIndex)}><PlayArrowIcon /></Button>}
-        <Button aria-label="next track" disabled={ isPlayerDisabled } onClick={onNext}><SkipNextIcon /></Button>
+        <Button aria-label="next track" disabled={ isPlayerDisabled } onClick={onNext} sx={{ marginLeft: '5px' }}><SkipNextIcon /></Button>
       </ButtonGroup>
     </div>
   );
