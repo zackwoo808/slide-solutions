@@ -5,6 +5,7 @@
   right: 0;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: teal;
@@ -13,10 +14,33 @@
   border-bottom-right-radius: 35px;
 }
 
+.player__bottom-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player__top-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+}
+
 .player__buttons {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 20%;
   border: none;
+}
+
+.player__time {
+  flex-basis: 10%;
+}
+
+.player__volume-controls {
+  display: flex;
+  width: 200px;
+  margin-left: auto;
 }
