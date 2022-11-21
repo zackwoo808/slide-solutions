@@ -14,6 +14,7 @@ export default function PlaylistTracks() {
   const [trackProgress, setTrackProgress] = useState(0);
   const [duration, setDuration] = useState();
   const [timeElapsed, setTimeElapsed] = useState();
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
 
   const dispatch = useDispatch();
   const activePlaylist = useSelector(state => state.activePlaylist);
@@ -50,7 +51,8 @@ export default function PlaylistTracks() {
         },
         onload() {
           setDuration(formatTime(track.duration()));
-        }
+        },
+        rate: playbackSpeed
       });
       
       setActiveSoundsPlaylist(activeSoundsPlaylist.map((item, itemIndex) => itemIndex === index ? { howl: track } : item));
@@ -150,6 +152,14 @@ export default function PlaylistTracks() {
       requestAnimationFrame(onStep.bind(this, track, setTrackProgress));
     }
   }
+
+  function onPlaybackSpeedChange(rate) {
+    setPlaybackSpeed(rate);
+
+    if (currentTrack) {
+      currentTrack.rate(rate);
+    }
+  }
   // #endregion player methods
   
   return (
@@ -173,12 +183,14 @@ export default function PlaylistTracks() {
       }
       <Player
         duration={duration}
-        onPlay={onPlay}
         onPause={onPause}
+        onPlay={onPlay}
+        onPlaybackSpeedChange={onPlaybackSpeedChange}
         onPrev={onPrev}
         onNext={onNext}
         onSeek={onSeek}
         onVolumeChange={onVolumeChange}
+        playbackSpeed={playbackSpeed}
         timeElapsed={timeElapsed}
         trackProgress={trackProgress}
         volumeLevel={volumeLevel}
