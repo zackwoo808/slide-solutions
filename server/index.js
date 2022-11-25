@@ -1,6 +1,8 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
+const { Readable } = require('stream');
+
 const {
   getTrack,
   getAllPlaylists,
@@ -56,28 +58,34 @@ app.get('/playlists/:playlistId/tracks', async (req, res) => {
 app.get('/audio/:trackKey', async (req, res) => {
   try {
     const { params: { trackKey } } = req;
-    const response = await getTrack(trackKey);
+    getTrack(trackKey, (err, response) => {
+      if (err || !response) {
+        console.log(err);
+        return;
+      }
 
-    const {
-      Body: stream,
-      ContentLength: contentLength,
-      ContentType: contentType,
-    } = response;
+      const {
+        Body,
+        ContentLength: contentLength,
+        ContentType: contentType,
+      } = response;
+    
+      const range = req.headers.range || '0';
+      const chunkSize = 1 * 1e6;  //  1MB
+      const start = Number(range.replace(/\D/g, ''));
+      const end = Math.min(start + chunkSize, contentLength - 1);
   
-    const range = req.headers.range || '0';
-    const chunkSize = 1 * 1e6;  //  1MB
-    const start = Number(range.replace(/\D/g, ''));
-    const end = Math.min(start + chunkSize, contentLength - 1);
-
-    const headers = {
-      'Content-Range': `bytes ${start}-${end}/${contentLength}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': contentLength,
-      'Content-Type': contentType,
-    };
-    res.writeHead(206, headers);
-
-    stream.pipe(res);
+      const headers = {
+        'Content-Range': `bytes ${start}-${end}/${contentLength}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': contentLength,
+        'Content-Type': contentType,
+      };
+      res.writeHead(206, headers);
+  
+      const stream = Readable.from(Body);
+      stream.pipe(res);
+    });
   } catch (err) {
     console.log(err);
     res

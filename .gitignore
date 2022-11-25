@@ -2,3 +2,4 @@ node_modules/
 build/
 *.csv
 .envrc
+*.mp3
