@@ -1,12 +1,27 @@
-export AWS_ACCESS_KEY_ID=
-export AWS_SECRET_ACCESS_KEY=
-export AWS_DEFAULT_REGION=
-export AWS_S3_BUCKET_NAME=
+export local LOCAL_ENV=dev # dev/int
 
+export AWS_DEFAULT_REGION=us-west-1
+export AWS_S3_BUCKET_NAME=slide-solutions-demo
 export REACT_APP_AWS_EC2_ENDPOINT=
 
+# local DB
 export PGDATABASE=
 export PGUSER=
 export PGPASSWORD=
 export PGHOST=
 export PGPORT=
+
+if [ $LOCAL_ENV = 'dev' ]; then
+  echo 'using dev vars'
+  export NODE_ENV=development
+
+  export AWS_ACCESS_KEY_ID=test
+  export AWS_SECRET_ACCESS_KEY=test
+  export AWS_S3_ENDPOINT=http://localhost:4566
+else
+  echo 'using int vars'
+  export NODE_ENV=int
+
+  export AWS_ACCESS_KEY_ID=
+  export AWS_SECRET_ACCESS_KEY=
+fi
