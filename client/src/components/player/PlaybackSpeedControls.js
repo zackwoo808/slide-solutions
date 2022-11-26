@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
+import { PlayerContext } from '../playlists/PlaylistController';
+
 const PlaybackSpeeds = [0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 
-export default function PlaybackSpeedControls({
-  onPlaybackSpeedChange,
-  playbackSpeed
-}) {
+export default function PlaybackSpeedControls() {
   const [playbackMenuAnchor, setPlaybackMenuAnchor] = useState(null);
+  const {
+    onPlaybackSpeedChange,
+    playbackSpeed
+  } = useContext(PlayerContext);
 
   const handlePlaybackOptsClose = (e) => {
     e.stopPropagation();

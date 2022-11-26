@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -7,11 +7,15 @@ import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeMute from '@mui/icons-material/VolumeMute';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
-export default function VolumeControls({
-  onVolumeChange,
-  volumeLevel,
-}) {
+import { PlayerContext } from '../playlists/PlaylistController';
+
+export default function VolumeControls() {
   const [volumeAnchor, setVolumeAnchor] = useState(null);
+
+  const {
+    onVolumeChange,
+    volumeLevel,
+  } = useContext(PlayerContext);
 
   const handleVolumeMenuClose = (e) => {
     e.stopPropagation();

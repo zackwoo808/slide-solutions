@@ -1,17 +1,23 @@
+import { useContext } from 'react';
+
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Slider from '@mui/material/Slider';
 
+import { PlayerContext } from '../playlists/PlaylistController';
+
 import '../../stylesheets/Player.css';
 
-export default function SeekBar({
-  duration,
-  onSeek,
-  onSeekComplete,
-  timeElapsed,
-  trackProgress
-}) {
+export default function SeekBar() {
+  const {
+    duration,
+    onSeek,
+    onSeekComplete,
+    timeElapsed,
+    trackProgress
+  } = useContext(PlayerContext);
+
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('sm'));
   
@@ -24,9 +30,10 @@ export default function SeekBar({
         }}
         aria-label="Playback progress bar"
         value={trackProgress}
-        onChange3={(e, newPosition) => onSeek(newPosition)}
+        onChange={(e, newPosition) => onSeek(newPosition)}
         onChangeCommitted={(e, newPosition) => onSeekComplete(newPosition)}
         size={isDesktop ? 'md' : 'sm'}
+        step={0.1}
       />
       <div className="player__time">{duration}</div>
     </>

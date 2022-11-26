@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
@@ -6,6 +6,8 @@ import List from '@mui/material/List';
 
 import Player from '../player/Player';
 import Track from './Track';
+
+const PlayerContext = createContext();
 
 export default function PlaylistController() {
   // #region state management
@@ -16,10 +18,13 @@ export default function PlaylistController() {
   const [duration, setDuration] = useState();
   const [timeElapsed, setTimeElapsed] = useState();
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+  const [isPausedBySeek, setIsPausedBySeek] = useState(false);
 
   const dispatch = useDispatch();
   const activePlaylist = useSelector(state => state.activePlaylist);
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
+  const isPlaying = useSelector(state => state.isPlaying);
+
   // #endregion state management
 
   // #region lifecycle methods
@@ -36,7 +41,7 @@ export default function PlaylistController() {
   // #endregion lifecycle methods
 
   // #region helper methods
-  function getTrack(index) {
+  const getTrack = (index) => {
     let track;
     index = typeof index === 'number' ? index : currentTrackIndex;
     const data = activeSoundsPlaylist[index];
@@ -66,25 +71,25 @@ export default function PlaylistController() {
 
     setCurrentTrack(track);
     return track;
-  }
+  };
 
-  function formatTime(time) {
+  const formatTime = (time) => {
     const minutes = Math.floor(time / 60) || 0;
     const seconds = Math.floor(time % 60) || 0;
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
-  }
+  };
   // #endregion helper methods
 
   // #region player methods
   function onPlay(index) {
-    if (index !== currentTrackIndex) {
+    if (index && index !== currentTrackIndex) {
       if (currentTrack) {
         currentTrack.stop();
       }
       dispatch({ type: 'UPDATE_CURRENT_TRACK_INDEX', index: index || 0 });
     }
 
-    if (!currentTrack || index !== currentTrackIndex) {
+    if (!currentTrack || (index !== currentTrackIndex)) {
       getTrack(index).play();
     } else {
       currentTrack.play();
@@ -132,20 +137,28 @@ export default function PlaylistController() {
       return;
     }
     
-    setTrackProgress((newPosition / currentTrack.duration()) * 100);
+    if (isPlaying && !isPausedBySeek) {
+      onPause();
+      setIsPausedBySeek(true);
+    }
+    setTrackProgress(newPosition);
   }
 
   function onSeekComplete(newPosition) {
     if (!currentTrack) {
       return;
     }
-    
-    currentTrack.seek(currentTrack.duration() * newPosition / 100);
+
+    currentTrack.seek(currentTrack.duration() * (newPosition / 100));
+
+    if (isPausedBySeek) {
+      setIsPausedBySeek(false);
+      onPlay();
+    }
   }
 
   function onStep(track, setTrackProgress) {
     if (!track) {
-      console.log('no track');
       return;
     }
 
@@ -174,7 +187,21 @@ export default function PlaylistController() {
   // #endregion player methods
   
   return (
-    <>
+    <PlayerContext.Provider value={{
+      duration,
+      onNext,
+      onPause,
+      onPlay,
+      onPlaybackSpeedChange,
+      onPrev,
+      onSeek,
+      onSeekComplete,
+      onVolumeChange,
+      playbackSpeed,
+      timeElapsed,
+      trackProgress,
+      volumeLevel
+    }}>
       {
         activePlaylist?.length ?
           <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
@@ -192,21 +219,11 @@ export default function PlaylistController() {
         :
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexBasis: '85%' }}>Select a Playlist to View Contents!</div>
       }
-      <Player
-        duration={duration}
-        onPause={onPause}
-        onPlay={onPlay}
-        onPlaybackSpeedChange={onPlaybackSpeedChange}
-        onPrev={onPrev}
-        onNext={onNext}
-        onSeek={onSeek}
-        onSeekComplete={onSeekComplete}
-        onVolumeChange={onVolumeChange}
-        playbackSpeed={playbackSpeed}
-        timeElapsed={timeElapsed}
-        trackProgress={trackProgress}
-        volumeLevel={volumeLevel}
-      />
-    </>
+      <Player />
+    </PlayerContext.Provider>
   );
+};
+
+export {
+  PlayerContext
 };

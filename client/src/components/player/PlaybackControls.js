@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
 import Button from '@mui/material/Button';
@@ -7,14 +8,17 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 
+import { PlayerContext } from '../playlists/PlaylistController';
+
 import '../../stylesheets/Player.css';
 
-export default function PlaybackControls({
-  onNext,
-  onPause,
-  onPlay,
-  onPrev,
-}) {
+export default function PlaybackControls() {
+  const {
+    onNext,
+    onPause,
+    onPlay,
+    onPrev,
+  } = useContext(PlayerContext);
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
   const isPlayerDisabled = useSelector(state => state.isPlayerDisabled);
   const isPlaying = useSelector(state => state.isPlaying);

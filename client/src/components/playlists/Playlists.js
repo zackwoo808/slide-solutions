@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Directory from './Directory.js';
@@ -24,15 +24,15 @@ export default function Playlists() {
 
 
   // #region helper methods
-  const handlePlaylistSelect = id => {
-    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
+  const handlePlaylistSelect = useCallback((id) => {
+    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
       .then(res => res.json())
       .then((data) => {
         dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data });
         dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: false });
       })
       .catch(err => console.log(err));
-  };
+  }, []);
   // #endregion helper methods
 
   return (
