@@ -43,6 +43,7 @@ export default function PlaylistTracks() {
       track = new Howl({
         src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${activePlaylist[index]?.s3_key}`,
         html5: true,
+        preload: true,
         onplay() {
           requestAnimationFrame(onStep.bind(this, track));
         },
@@ -139,11 +140,9 @@ export default function PlaylistTracks() {
     const newTrackPosition = track.seek() || 0;
     setTimeElapsed(formatTime(newTrackPosition));
 
-    const n = ((newTrackPosition / track.duration()) * 100 || 0).toFixed(1);
-    console.log(n);
     const updateTrackProgress = new CustomEvent('updateSlideTrackProgress', {
       detail: {
-        newProgress: n
+        newProgress: ((newTrackPosition / track.duration()) * 100 || 0).toFixed(1),
       }
     });
     window.dispatchEvent(updateTrackProgress);
