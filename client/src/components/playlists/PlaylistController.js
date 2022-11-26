@@ -82,7 +82,7 @@ export default function PlaylistController() {
 
   // #region player methods
   function onPlay(index) {
-    if (index && index !== currentTrackIndex) {
+    if (index !== undefined && index !== currentTrackIndex) {
       if (currentTrack) {
         currentTrack.stop();
       }
