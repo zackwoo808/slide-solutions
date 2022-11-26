@@ -37,10 +37,15 @@
 
 .player__time {
   flex-basis: 10%;
+  font-size: 14px;
 }
 
-.player__volume-controls {
-  display: flex;
-  width: 200px;
-  margin-left: auto;
+@media (min-width: 768px) {
+  .player__top-controls {
+    width: 600px;
+  }
+
+  .player__buttons {
+    width: 20%;
+  }
 }

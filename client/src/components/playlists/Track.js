@@ -100,7 +100,6 @@ export default function Track({ index, track: { title, music_key, s3_key, bpm, c
           handleClose(e);
         }
       }}>Download</MenuItem>
-      <MenuItem onClick={handleClose}>Share</MenuItem>
     </Menu>
     </ListItem>
   );

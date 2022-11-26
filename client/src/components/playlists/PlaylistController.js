@@ -4,10 +4,11 @@ import { Howl, Howler } from 'howler';
 
 import List from '@mui/material/List';
 
-import Player from '../shared/Player';
+import Player from '../player/Player';
 import Track from './Track';
 
-export default function PlaylistTracks() {
+export default function PlaylistController() {
+  // #region state management
   const [currentTrack, setCurrentTrack] = useState();
   const [activeSoundsPlaylist, setActiveSoundsPlaylist] = useState([]);
   const [volumeLevel, setVolumeLevel] = useState(10);
@@ -19,7 +20,9 @@ export default function PlaylistTracks() {
   const dispatch = useDispatch();
   const activePlaylist = useSelector(state => state.activePlaylist);
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
+  // #endregion state management
 
+  // #region lifecycle methods
   useEffect(() => {
     setActiveSoundsPlaylist(activePlaylist.map(() => ({})));
   }, [activePlaylist]);
@@ -30,6 +33,7 @@ export default function PlaylistTracks() {
       setTrackProgress(newProgress);
     });
   }, []);
+  // #endregion lifecycle methods
 
   // #region helper methods
   function getTrack(index) {
@@ -53,7 +57,8 @@ export default function PlaylistTracks() {
         onload() {
           setDuration(formatTime(track.duration()));
         },
-        rate: playbackSpeed
+        rate: playbackSpeed,
+        volume: volumeLevel/100,
       });
       
       setActiveSoundsPlaylist(activeSoundsPlaylist.map((item, itemIndex) => itemIndex === index ? { howl: track } : item));
@@ -127,8 +132,15 @@ export default function PlaylistTracks() {
       return;
     }
     
-    currentTrack.seek(currentTrack.duration() * newPosition / 100);
     setTrackProgress((newPosition / currentTrack.duration()) * 100);
+  }
+
+  function onSeekComplete(newPosition) {
+    if (!currentTrack) {
+      return;
+    }
+    
+    currentTrack.seek(currentTrack.duration() * newPosition / 100);
   }
 
   function onStep(track, setTrackProgress) {
@@ -188,6 +200,7 @@ export default function PlaylistTracks() {
         onPrev={onPrev}
         onNext={onNext}
         onSeek={onSeek}
+        onSeekComplete={onSeekComplete}
         onVolumeChange={onVolumeChange}
         playbackSpeed={playbackSpeed}
         timeElapsed={timeElapsed}
