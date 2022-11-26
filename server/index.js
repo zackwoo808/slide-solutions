@@ -5,6 +5,7 @@ const { Readable } = require('stream');
 
 const {
   getTrack,
+  getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
 } = require('./lib/stream');
@@ -55,13 +56,48 @@ app.get('/playlists/:playlistId/tracks', async (req, res) => {
   }
 });
 
-app.get('/audio/:trackKey', async (req, res) => {
-  try {
+app.get('/audio/:trackKey', (req, res) => {
+  const { params: { trackKey } } = req;
+
+  getTrackStream(trackKey, (err, response) => {
+    if (err || !response) {
+      console.log(err);
+      return res
+        .status(500)
+        .json(err);
+    }
+
+    const {
+      Body,
+      ContentLength: contentLength,
+      ContentType: contentType,
+    } = response;
+  
+    const range = req.headers.range || '0';
+    const chunkSize = 1 * 1e6;  //  1MB
+    const start = Number(range.replace(/\D/g, ''));
+    const end = Math.min(start + chunkSize, contentLength - 1);
+
+    const headers = {
+      'Content-Range': `bytes ${start}-${end}/${contentLength}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': contentLength,
+      'Content-Type': contentType,
+    };
+    res.writeHead(206, headers);
+
+    const stream = Readable.from(Body);
+    stream.pipe(res);
+  });
+});
+
+app.get('/download/:trackKey', async (req, res) => {
+  const promise = new Promise((resolve, reject) => {
     const { params: { trackKey } } = req;
     getTrack(trackKey, (err, response) => {
       if (err || !response) {
         console.log(err);
-        return;
+        return reject(err);
       }
 
       const {
@@ -70,28 +106,23 @@ app.get('/audio/:trackKey', async (req, res) => {
         ContentType: contentType,
       } = response;
     
-      const range = req.headers.range || '0';
-      const chunkSize = 1 * 1e6;  //  1MB
-      const start = Number(range.replace(/\D/g, ''));
-      const end = Math.min(start + chunkSize, contentLength - 1);
-  
-      const headers = {
-        'Content-Range': `bytes ${start}-${end}/${contentLength}`,
-        'Accept-Ranges': 'bytes',
+      resolve({ data: Body, contentType, contentLength });
+    });
+  });
+
+  promise
+    .then(({ data, contentType, contentLength }) => {
+      res.writeHead(206, {
         'Content-Length': contentLength,
         'Content-Type': contentType,
-      };
-      res.writeHead(206, headers);
-  
-      const stream = Readable.from(Body);
+      });
+      
+      const stream = Readable.from(data);
       stream.pipe(res);
-    });
-  } catch (err) {
-    console.log(err);
-    res
+    })
+    .catch (err => res
       .status(500)
-      .json(err);
-  }
+      .json(err));
 });
 
 app.get('*', (req, res) => {

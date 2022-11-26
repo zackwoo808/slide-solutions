@@ -11,7 +11,23 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function Track({ index, track: { title, music_key, bpm, creators }, onPause, onPlay }) {
+const download = (path, filename) => {
+  // Create a new link
+  const anchor = document.createElement('a');
+  anchor.href = path;
+  anchor.download = filename;
+
+  // Append to the DOM
+  document.body.appendChild(anchor);
+
+  // Trigger `click` event
+  anchor.click();
+
+  // Remove element from DOM
+  document.body.removeChild(anchor);
+}; 
+
+export default function Track({ index, track: { title, music_key, s3_key, bpm, creators }, onPause, onPlay }) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
@@ -68,7 +84,22 @@ export default function Track({ index, track: { title, music_key, bpm, creators 
           'aria-labelledby': 'basic-button',
         }}
       >
-      <MenuItem onClick={handleClose}>Download</MenuItem>
+      <MenuItem onClick={async (e) => {
+        try {
+          const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/download/${s3_key}`);
+          const blob = await response.blob();
+          const url = await URL.createObjectURL(blob);
+          // Download file
+          download(url, s3_key);
+
+          // Release the object URL
+          URL.revokeObjectURL(url);
+          handleClose(e);
+        } catch (err) {
+          console.log(err);
+          handleClose(e);
+        }
+      }}>Download</MenuItem>
       <MenuItem onClick={handleClose}>Share</MenuItem>
     </Menu>
     </ListItem>

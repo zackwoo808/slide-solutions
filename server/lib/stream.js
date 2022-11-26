@@ -1,13 +1,25 @@
 const { s3Client } = require('./s3Client');
 const sql = require('./db');
 
-function getTrack(trackKey, cb) {
+function getTrackStream(trackKey, cb) {
   try {
     return s3Client.getObject({
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: trackKey,
       ResponseContentType: 'stream',
       Range: 'bytes=16561-8065611',
+    }, cb);
+  } catch (err) {
+    console.log(new Error(err));
+    return {};
+  }
+}
+
+function getTrack(trackKey, cb) {
+  try {
+    return s3Client.getObject({
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: trackKey,
     }, cb);
   } catch (err) {
     console.log(new Error(err));
@@ -47,6 +59,7 @@ async function getAllPlaylistTracks(playlistId) {
 
 module.exports = {
   getTrack,
+  getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
 };
