@@ -88,7 +88,7 @@ button {
   html .app__main {
     max-height: calc(100vh - 108px);
     /* flex-basis: 75%; */
-    margin: 0 20px 0 0;
+    /* margin: 0 20px 0 0; */
   }
   .app__info {
     display: flex;

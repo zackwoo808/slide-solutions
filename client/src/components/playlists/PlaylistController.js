@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
@@ -6,8 +6,6 @@ import List from '@mui/material/List';
 
 import Player from '../player/Player';
 import Track from './Track';
-
-const PlayerContext = createContext();
 
 export default function PlaylistController() {
   // #region state management
@@ -29,19 +27,20 @@ export default function PlaylistController() {
 
   // #region lifecycle methods
   useEffect(() => {
-    setActiveSoundsPlaylist(activePlaylist.map(() => ({})));
+    const test = activePlaylist.map(() => ({}));
+    setActiveSoundsPlaylist(test);
   }, [activePlaylist]);
 
   useEffect(() => {
     window.addEventListener('updateSlideTrackProgress', e => {
       const { newProgress = 0 } = e.detail || {};
-      setTrackProgress(newProgress);
+      setTrackProgress(+newProgress);
     });
   }, []);
   // #endregion lifecycle methods
 
   // #region helper methods
-  const getTrack = (index) => {
+  function getTrack(index) {
     let track;
     index = typeof index === 'number' ? index : currentTrackIndex;
     const data = activeSoundsPlaylist[index];
@@ -52,7 +51,7 @@ export default function PlaylistController() {
       track = new Howl({
         src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${activePlaylist[index]?.s3_key}`,
         html5: true,
-        preload: true,
+        preload: false,
         onplay() {
           requestAnimationFrame(onStep.bind(this, track));
         },
@@ -63,9 +62,9 @@ export default function PlaylistController() {
           setDuration(formatTime(track.duration()));
         },
         rate: playbackSpeed,
-        volume: volumeLevel/100,
+        volume: volumeLevel / 100,
       });
-      
+
       setActiveSoundsPlaylist(activeSoundsPlaylist.map((item, itemIndex) => itemIndex === index ? { howl: track } : item));
     }
 
@@ -73,7 +72,7 @@ export default function PlaylistController() {
     return track;
   };
 
-  const formatTime = (time) => {
+  function formatTime(time) {
     const minutes = Math.floor(time / 60) || 0;
     const seconds = Math.floor(time % 60) || 0;
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
@@ -81,7 +80,7 @@ export default function PlaylistController() {
   // #endregion helper methods
 
   // #region player methods
-  function onPlay(index) {
+  const onPlay = useCallback((index) => {
     if (index !== undefined && index !== currentTrackIndex) {
       if (currentTrack) {
         currentTrack.stop();
@@ -96,28 +95,28 @@ export default function PlaylistController() {
     }
 
     dispatch({ type: 'TOGGLE_PLAYER_PLAYING', isPlaying: true });
-  }
+  }, [activePlaylist, activeSoundsPlaylist, currentTrackIndex, currentTrack]);
 
-  function onPause() {
+  const onPause = useCallback(() => {
     if (!currentTrack) {
       return;
     }
 
     currentTrack.pause();
     dispatch({ type: 'TOGGLE_PLAYER_PLAYING', isPlaying: false });
-  }
+  }, [currentTrack]);
 
-  function onNext() {
+  const onNext = useCallback(() => {
     let newIndex = 0;
     if (currentTrack) {
       newIndex = currentTrackIndex === activePlaylist.length - 1 ? 0 : currentTrackIndex + 1;
-    } 
+    }
 
     onPlay(newIndex);
     dispatch({ type: 'UPDATE_CURRENT_TRACK_INDEX', index: newIndex });
-  }
+  }, [currentTrack, currentTrackIndex]);
 
-  function onPrev() {
+  const onPrev = useCallback(() => {
     let newIndex = activePlaylist.length - 1;
     if (currentTrack) {
       newIndex = currentTrackIndex === 0 ? activePlaylist.length - 1 : currentTrackIndex - 1;
@@ -125,26 +124,25 @@ export default function PlaylistController() {
 
     onPlay(newIndex);
     dispatch({ type: 'UPDATE_CURRENT_TRACK_INDEX', index: newIndex });
-  }
+  }, [currentTrack, onPlay]);
 
-  function onVolumeChange(value) {
+  const onVolumeChange = useCallback((value) => {
     setVolumeLevel(value);
-    Howler.volume(value/100);
-  }
+    Howler.volume(value / 100);
+  }, []);
 
-  function onSeek(newPosition) {
+  const onSeek = useCallback(() => {
     if (!currentTrack) {
       return;
     }
-    
+
     if (isPlaying && !isPausedBySeek) {
       onPause();
       setIsPausedBySeek(true);
     }
-    setTrackProgress(newPosition);
-  }
+  }, [currentTrack, isPlaying, isPausedBySeek]);
 
-  function onSeekComplete(newPosition) {
+  const onSeekComplete = useCallback((newPosition) => {
     if (!currentTrack) {
       return;
     }
@@ -155,9 +153,9 @@ export default function PlaylistController() {
       setIsPausedBySeek(false);
       onPlay();
     }
-  }
+  }, [currentTrack, isPausedBySeek]);
 
-  function onStep(track, setTrackProgress) {
+  const onStep = useCallback((track) => {
     if (!track) {
       return;
     }
@@ -173,57 +171,30 @@ export default function PlaylistController() {
     window.dispatchEvent(updateTrackProgress);
 
     if (track.playing()) {
-      requestAnimationFrame(onStep.bind(this, track, setTrackProgress));
+      requestAnimationFrame(onStep.bind(this, track));
     }
-  }
+  }, []);
 
-  function onPlaybackSpeedChange(rate) {
+  const onPlaybackSpeedChange = useCallback((rate) => {
     setPlaybackSpeed(rate);
 
     if (currentTrack) {
       currentTrack.rate(rate);
     }
-  }
+  }, [currentTrack]);
   // #endregion player methods
-  
+
   return (
-    <PlayerContext.Provider value={{
-      duration,
-      onNext,
-      onPause,
-      onPlay,
-      onPlaybackSpeedChange,
-      onPrev,
-      onSeek,
-      onSeekComplete,
-      onVolumeChange,
-      playbackSpeed,
-      timeElapsed,
-      trackProgress,
-      volumeLevel
-    }}>
-      {
-        activePlaylist?.length ?
-          <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
-            {activePlaylist?.map((track, index) => (
-              <Track
-                  key={track.track_id}
-                  index={index}
-                  track={track}
-                  currentTrack={currentTrack}
-                  onPlay={onPlay}
-                  onPause={onPause}
-              />
-            ))}
-          </List>
-        :
+    <>
+      {activePlaylist?.length ?
+        <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
+          {activePlaylist?.map((track, index) => (
+            <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+          ))}
+        </List> :
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexBasis: '85%' }}>Select a Playlist to View Contents!</div>
       }
-      <Player />
-    </PlayerContext.Provider>
+      <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />
+    </>
   );
-};
-
-export {
-  PlayerContext
 };

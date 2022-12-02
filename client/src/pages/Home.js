@@ -15,7 +15,7 @@ export default function Home() {
       .then((res) => res.json())
       .then(data => dispatch({ type: 'SET_WELCOME_MESSAGE', message: data.message }))
       .catch(err => console.log(err));
-  });
+  }, []);
   // #endregion lifecycle methods
 
   return (

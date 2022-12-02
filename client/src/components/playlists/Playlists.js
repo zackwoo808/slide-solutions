@@ -19,7 +19,7 @@ export default function Playlists() {
       .then(res => res.json())
       .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
       .catch(err => console.log(err));
-  });
+  }, []);
   // #endregion lifecycle methods
 
 
@@ -38,10 +38,7 @@ export default function Playlists() {
   return (
     <div className="app__main">
       <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />
-      <PlaylistController
-        activePlaylist={activePlaylist}
-        isPlayerDisabled={isPlayerDisabled}
-      />
+      <PlaylistController activePlaylist={activePlaylist} isPlayerDisabled={isPlayerDisabled} />
     </div>
   );
 };

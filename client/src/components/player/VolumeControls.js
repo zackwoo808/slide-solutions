@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -7,27 +7,28 @@ import VolumeDown from '@mui/icons-material/VolumeDown';
 import VolumeMute from '@mui/icons-material/VolumeMute';
 import VolumeUp from '@mui/icons-material/VolumeUp';
 
-import { PlayerContext } from '../playlists/PlaylistController';
-
-export default function VolumeControls() {
+export default function VolumeControls({ onVolumeChange, volumeLevel }) {
+  // #region state management
   const [volumeAnchor, setVolumeAnchor] = useState(null);
+  // #endregion state management
 
-  const {
-    onVolumeChange,
-    volumeLevel,
-  } = useContext(PlayerContext);
-
-  const handleVolumeMenuClose = (e) => {
+  // #region helper methods
+  const onVolumeMenuClose = useCallback((e) => {
     e.stopPropagation();
     setVolumeAnchor(null);
-  };
+  }, []);
+
+  const onVolumeMenuOpen = useCallback((e) => {
+    e.stopPropagation();
+    setVolumeAnchor(e.currentTarget);
+  }, []);
+
+  const handleVolumeChange = useCallback((e, newPosition) => onVolumeChange(newPosition), [onVolumeChange]);
+  // #endregion helper methods
 
   return (
     <>
-      <IconButton id="volume-button" onClick={(e) => {
-        e.stopPropagation();
-        setVolumeAnchor(e.currentTarget);
-      }}>
+      <IconButton id="volume-button" onClick={onVolumeMenuOpen}>
         {volumeLevel === 0 ?
           <VolumeMute />
           : volumeLevel < 51 ?
@@ -35,33 +36,8 @@ export default function VolumeControls() {
             : <VolumeUp />
         }
       </IconButton>
-      <Menu
-        id="mobile-volume-control"
-        anchorEl={volumeAnchor}
-        open={Boolean(volumeAnchor)}
-        onClose={handleVolumeMenuClose}
-        MenuListProps={{
-          'aria-labelledby': 'volume-button',
-        }}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        // sx={{ width: '50px' }}
-      >
-        <Slider
-          aria-label="Volume"
-          onChange={(e, newPosition) => onVolumeChange(newPosition)}
-          orientation="vertical"
-          value={volumeLevel}
-          sx={{
-            height: '120px',
-          }}
-        />
+      <Menu id="mobile-volume-control" anchorEl={volumeAnchor} open={Boolean(volumeAnchor)} onClose={onVolumeMenuClose} MenuListProps={{ 'aria-labelledby': 'volume-button' }} anchorOrigin={{ vertical: 'top', horizontal: 'center' }} transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <Slider aria-label="Volume" onChange={handleVolumeChange} orientation="vertical" value={volumeLevel} sx={{ height: '120px' }} />
       </Menu>
     </>
   );

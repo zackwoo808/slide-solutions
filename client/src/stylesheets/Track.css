@@ -1,0 +1,7 @@
+.track__creators {
+  max-height: '20px';
+  width: '250px';
+  overflow: 'hidden';
+  white-space: 'nowrap';
+  text-overflow: 'ellipsis';
+}

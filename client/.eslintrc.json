@@ -9,14 +9,12 @@
         "**/*.js?(x)"
       ],
       "rules": {
-        "semi": [
-          "error",
-          "always"
-        ],
+        "semi": 2,
         "quotes": [
           "error",
           "single"
-        ]
+        ],
+        "react-hooks/exhaustive-deps": 0
       }
     }
   ]
