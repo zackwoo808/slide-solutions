@@ -1,3 +1,4 @@
+// currently unused
 import { useState } from 'react';
 
 import DialogTitle from '@mui/material/DialogTitle';
@@ -8,7 +9,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
-const Upload = () => {
+export default function Upload() {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -77,5 +78,3 @@ const Upload = () => {
     </div>
   );
 };
-
-export default Upload;

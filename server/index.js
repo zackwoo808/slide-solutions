@@ -1,8 +1,11 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
+const { Readable } = require('stream');
+
 const {
   getTrack,
+  getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
 } = require('./lib/stream');
@@ -53,13 +56,19 @@ app.get('/playlists/:playlistId/tracks', async (req, res) => {
   }
 });
 
-app.get('/audio/:trackName', async (req, res) => {
-  try {
-    const { params: { trackName } } = req;
-    const response = await getTrack(trackName);
+app.get('/audio/:trackKey', (req, res) => {
+  const { params: { trackKey } } = req;
+
+  getTrackStream(trackKey, (err, response) => {
+    if (err || !response) {
+      console.log(err);
+      return res
+        .status(500)
+        .json(err);
+    }
 
     const {
-      Body: stream,
+      Body,
       ContentLength: contentLength,
       ContentType: contentType,
     } = response;
@@ -77,13 +86,43 @@ app.get('/audio/:trackName', async (req, res) => {
     };
     res.writeHead(206, headers);
 
+    const stream = Readable.from(Body);
     stream.pipe(res);
-  } catch (err) {
-    console.log(err);
-    res
+  });
+});
+
+app.get('/download/:trackKey', async (req, res) => {
+  const promise = new Promise((resolve, reject) => {
+    const { params: { trackKey } } = req;
+    getTrack(trackKey, (err, response) => {
+      if (err || !response) {
+        console.log(err);
+        return reject(err);
+      }
+
+      const {
+        Body,
+        ContentLength: contentLength,
+        ContentType: contentType,
+      } = response;
+    
+      resolve({ data: Body, contentType, contentLength });
+    });
+  });
+
+  promise
+    .then(({ data, contentType, contentLength }) => {
+      res.writeHead(206, {
+        'Content-Length': contentLength,
+        'Content-Type': contentType,
+      });
+      
+      const stream = Readable.from(data);
+      stream.pipe(res);
+    })
+    .catch (err => res
       .status(500)
-      .json(err);
-  }
+      .json(err));
 });
 
 app.get('*', (req, res) => {

@@ -10,6 +10,7 @@ const theme = createTheme({
         // The props to change the default for.
         disableRipple: true, // No more ripple, on the whole application 💣!
       },
+      border: 'none',
     },
   },
   palette: {

@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "react-app",
+    "react-app/jest"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.js?(x)"
+      ],
+      "rules": {
+        "semi": 2,
+        "quotes": [
+          "error",
+          "single"
+        ],
+        "react-hooks/exhaustive-deps": 0
+      }
+    }
+  ]
+}

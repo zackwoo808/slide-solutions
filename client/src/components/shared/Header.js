@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -15,26 +15,24 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
-import SlideIcon from '../library/SlideIcon';
+import SlideIcon from '../playlists/SlideIcon';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-import yoshiAvatar from '../../yoshi.png';
+import yoshiAvatar from '../../images/yoshi.png';
 
 const pages = [
   {component: HomeIcon, route: '/'},
   {component: LibraryMusicIcon, route: '/playlists'},
-  {component: CreateNewFolderIcon, route: '/tracks'},
   {component: ForumRoundedIcon, route: '/messages'},
   {component: PersonAddAltRoundedIcon, route: '/friends'},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-const Header = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+export default function Header() {
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -187,5 +185,3 @@ const Header = () => {
     </AppBar>
   );
 };
-
-export default Header;

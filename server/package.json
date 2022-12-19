@@ -12,7 +12,7 @@
   "author": "Zack Woo",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.170.0",
+    "aws-sdk": "^2.1261.0",
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "lodash": "^4.17.21",

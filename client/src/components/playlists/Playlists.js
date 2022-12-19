@@ -1,0 +1,48 @@
+import { useEffect, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import '../../stylesheets/App.css';
+
+import Directory from './Directory.js';
+import PlaylistController from './PlaylistController.js';
+
+export default function Playlists() {
+  // #region state management
+  const dispatch = useDispatch();
+  const currentPlaylists = useSelector(state => state.currentPlaylists);
+  const isPlayerVisible = useSelector(state => state.isPlayerVisible);
+  // #endregion state management
+
+  // #region lifecycle methods
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
+      .then(res => res.json())
+      .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
+      .catch(err => console.log(err));
+  }, []);
+  // #endregion lifecycle methods
+
+
+  // #region helper methods
+  const handlePlaylistSelect = useCallback((id, title) => {
+    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
+      .then(res => res.json())
+      .then((data) => {
+        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title } });
+        dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: false });
+        dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: true });
+      })
+      .catch(err => console.log(err));
+  }, []);
+  // #endregion helper methods
+
+  return (
+    <div className="app__main">
+      {isPlayerVisible
+        ? <></> 
+        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />}
+      <PlaylistController />
+    </div>
+  );
+};
