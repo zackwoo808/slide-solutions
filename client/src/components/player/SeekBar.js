@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -11,6 +12,7 @@ import '../../stylesheets/Player.css';
 export default function SeekBar({ duration, onSeek, onSeekComplete, timeElapsed, trackProgress }) {
   // #region state management
     const [position, setPosition] = useState(trackProgress);
+    const isPlayerDisabled = useSelector(state => state.isPlayerDisabled);
   // #endregion
   
   // #region lifecycle methods
@@ -36,7 +38,7 @@ export default function SeekBar({ duration, onSeek, onSeekComplete, timeElapsed,
   return (
     <>
       <div className="player__time">{timeElapsed}</div>
-      <Slider id="seek-bar-slider" aria-label="Playback progress bar" value={position} onChange={onChange} onChangeCommitted={onChangeCommitted} size={isDesktop ? 'md' : 'sm'} step={0.1} sx={{ margin: '0 30px' }} />
+      <Slider id="seek-bar-slider" disabled={isPlayerDisabled} aria-label="Playback progress bar" value={position} onChange={onChange} onChangeCommitted={onChangeCommitted} size={isDesktop ? 'md' : 'sm'} step={0.1} sx={{ margin: '0 30px' }} />
       <div className="player__time">{duration}</div>
     </>
   );

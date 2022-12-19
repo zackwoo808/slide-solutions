@@ -15,7 +15,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
-import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
 import SlideIcon from '../playlists/SlideIcon';
@@ -26,7 +25,6 @@ import yoshiAvatar from '../../images/yoshi.png';
 const pages = [
   {component: HomeIcon, route: '/'},
   {component: LibraryMusicIcon, route: '/playlists'},
-  {component: CreateNewFolderIcon, route: '/tracks'},
   {component: ForumRoundedIcon, route: '/messages'},
   {component: PersonAddAltRoundedIcon, route: '/friends'},
 ];

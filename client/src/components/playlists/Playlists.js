@@ -1,15 +1,16 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import '../../stylesheets/App.css';
+
 import Directory from './Directory.js';
 import PlaylistController from './PlaylistController.js';
 
 export default function Playlists() {
   // #region state management
   const dispatch = useDispatch();
-  const activePlaylist = useSelector(state => state.activePlaylist);
-  const isPlayerDisabled = useSelector(state => state.isPlayerDisabled);
   const currentPlaylists = useSelector(state => state.currentPlaylists);
+  const isPlayerVisible = useSelector(state => state.isPlayerVisible);
   // #endregion state management
 
   // #region lifecycle methods
@@ -24,12 +25,13 @@ export default function Playlists() {
 
 
   // #region helper methods
-  const handlePlaylistSelect = useCallback((id) => {
+  const handlePlaylistSelect = useCallback((id, title) => {
     return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
       .then(res => res.json())
       .then((data) => {
-        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data });
+        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title } });
         dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: false });
+        dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: true });
       })
       .catch(err => console.log(err));
   }, []);
@@ -37,8 +39,10 @@ export default function Playlists() {
 
   return (
     <div className="app__main">
-      <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />
-      <PlaylistController activePlaylist={activePlaylist} isPlayerDisabled={isPlayerDisabled} />
+      {isPlayerVisible
+        ? <></> 
+        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />}
+      <PlaylistController />
     </div>
   );
 };

@@ -2,6 +2,8 @@ import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
+import '../../stylesheets/Playlists.css';
+
 import List from '@mui/material/List';
 
 import Player from '../player/Player';
@@ -22,13 +24,13 @@ export default function PlaylistController() {
   const activePlaylist = useSelector(state => state.activePlaylist);
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
   const isPlaying = useSelector(state => state.isPlaying);
+  const isPlayerVisible = useSelector(state => state.isPlayerVisible);
 
   // #endregion state management
 
   // #region lifecycle methods
   useEffect(() => {
-    const test = activePlaylist.map(() => ({}));
-    setActiveSoundsPlaylist(test);
+    setActiveSoundsPlaylist(activePlaylist.tracks.map(() => ({})));
   }, [activePlaylist]);
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export default function PlaylistController() {
       track = data.howl;
     } else {
       track = new Howl({
-        src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${activePlaylist[index]?.s3_key}`,
+        src: `${process.env.REACT_APP_AWS_EC2_ENDPOINT}/audio/${activePlaylist.tracks[index]?.s3_key}`,
         html5: true,
         preload: false,
         onplay() {
@@ -109,7 +111,7 @@ export default function PlaylistController() {
   const onNext = useCallback(() => {
     let newIndex = 0;
     if (currentTrack) {
-      newIndex = currentTrackIndex === activePlaylist.length - 1 ? 0 : currentTrackIndex + 1;
+      newIndex = currentTrackIndex === activePlaylist.tracks.length - 1 ? 0 : currentTrackIndex + 1;
     }
 
     onPlay(newIndex);
@@ -117,9 +119,9 @@ export default function PlaylistController() {
   }, [currentTrack, currentTrackIndex]);
 
   const onPrev = useCallback(() => {
-    let newIndex = activePlaylist.length - 1;
+    let newIndex = activePlaylist.tracks.length - 1;
     if (currentTrack) {
-      newIndex = currentTrackIndex === 0 ? activePlaylist.length - 1 : currentTrackIndex - 1;
+      newIndex = currentTrackIndex === 0 ? activePlaylist.tracks.length - 1 : currentTrackIndex - 1;
     }
 
     onPlay(newIndex);
@@ -185,16 +187,19 @@ export default function PlaylistController() {
   // #endregion player methods
 
   return (
-    <>
-      {activePlaylist?.length ?
-        <List sx={{ flexBasis: '85%', overflow: 'scroll', paddingLeft: '10px' }}>
-          {activePlaylist?.map((track, index) => (
-            <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
-          ))}
-        </List> :
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexBasis: '85%' }}>Select a Playlist to View Contents!</div>
+    <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : '' }`}>
+      {activePlaylist?.tracks?.length
+        ? <div className="playlists__active-tracks">
+            <h2>{activePlaylist.title}</h2>
+            <List sx={{ overflow: 'scroll', paddingLeft: '10px' }}>
+              {activePlaylist.tracks.map((track, index) => (
+                <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+              ))}
+            </List>
+          </div>
+        : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Playlists</div>
       }
       <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />
-    </>
+    </div>
   );
 };

@@ -1,0 +1,26 @@
+.playlist__directory {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: none;
+}
+
+.playlists__controller {
+  display: none;
+}
+
+.playlists__controller--visible {
+  display: flex;
+}
+
+.playlists__active-tracks {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .playlist__directory {
+    flex-basis: '15%';
+    border-right: '2px solid grey';
+  }
+}

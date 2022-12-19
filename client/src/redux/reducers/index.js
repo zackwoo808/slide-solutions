@@ -1,9 +1,13 @@
 const initialState = {
-  activePlaylist: [],
+  activePlaylist: {
+    tracks: [],
+    title: '',
+  },
   currentPlaylists: [],
   currentTrackIndex: 0,
   currentTracks: [],
   isPlayerDisabled: true,
+  isPlayerVisible: false,
   isPlaying: false,
   isTrackLastClicked: false,
   welcomeMessage: '',
@@ -16,6 +20,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         isPlayerDisabled: action.isPlayerDisabled,
+      };
+    case 'TOGGLE_PLAYER_VISIBLE':
+      return {
+        ...state,
+        isPlayerVisible: action.isPlayerVisible,
       };
     case 'TOGGLE_PLAYER_PLAYING':
       return {
@@ -30,7 +39,10 @@ export default function rootReducer(state = initialState, action) {
     case 'UPDATE_ACTIVE_PLAYLIST':
       return {
         ...state,
-        activePlaylist: action.data,
+        activePlaylist: {
+          tracks: action.data.tracks,
+          title: action.data.title,
+        }
       };
     case 'UPDATE_CURRENT_PLAYLISTS':
       return {

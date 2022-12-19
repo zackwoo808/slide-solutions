@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -10,6 +11,7 @@ import VolumeUp from '@mui/icons-material/VolumeUp';
 export default function VolumeControls({ onVolumeChange, volumeLevel }) {
   // #region state management
   const [volumeAnchor, setVolumeAnchor] = useState(null);
+  const isPlayerDisabled = useSelector(state => state.isPlayerDisabled);
   // #endregion state management
 
   // #region helper methods
@@ -28,7 +30,7 @@ export default function VolumeControls({ onVolumeChange, volumeLevel }) {
 
   return (
     <>
-      <IconButton id="volume-button" onClick={onVolumeMenuOpen}>
+      <IconButton id="volume-button" onClick={onVolumeMenuOpen} disabled={isPlayerDisabled}>
         {volumeLevel === 0 ?
           <VolumeMute />
           : volumeLevel < 51 ?

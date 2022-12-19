@@ -10,8 +10,6 @@
   justify-content: center;
   background-color: teal;
   height: 100px;
-  border-bottom-left-radius: 35px;
-  border-bottom-right-radius: 35px;
 }
 
 .player__bottom-controls {
@@ -41,6 +39,11 @@
 }
 
 @media (min-width: 768px) {
+  .player {
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+  }
+  
   .player__top-controls {
     width: 600px;
   }

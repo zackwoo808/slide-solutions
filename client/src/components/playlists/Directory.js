@@ -1,26 +1,23 @@
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
+import ListItem from '@mui/material/ListItem';
+import Button from '@mui/material/Button';
 import ListItemText from '@mui/material/ListItemText';
+
+import '../../stylesheets/Playlists.css';
 
 export default function Directory({ playlists, handlePlaylistSelect }) {
   return (
-    <List
-      sx={{ borderRight: '2px solid grey', flexBasis: '15%', overflow: 'clip' }}
-      component='nav'
-      aria-labelledby='nested-sub-header'
-      subheader='Playlists'
-    >
+    <List sx={{ overflow: 'clip', width: '100%' }} component='nav' aria-labelledby='nested-sub-header' subheader='Playlists' className="playlist__directory">
       {playlists?.map(({ playlist_id, title }, index) => {
         return (
-          <ListItemButton
-            onClick={() => {
-              handlePlaylistSelect(playlist_id);
-            }}
-            sx={{ paddingLeft: '20px' }}
-            key={ index }
-          >
-            <ListItemText primary={ title } />
-          </ListItemButton>
+          <ListItem sx={{ maxHeight: '50px', padding: '0' }} key={ index }>
+            <Button sx={{ width: '100%' }} variant="outlined" onClick={() => {
+              
+              handlePlaylistSelect(playlist_id, title);
+            }}>
+              <ListItemText primary={ title } />
+            </Button>
+          </ListItem>
         );
       })}
     </List>

@@ -10,7 +10,6 @@ import Friends from '../pages/Friends';
 import Home from '../pages/Home';
 import Messages from '../pages/Messages';
 import Playlists from '../pages/Playlists';
-import Tracks from '../pages/Tracks';
 
 import '../stylesheets/App.css';
 
@@ -22,7 +21,6 @@ export default function App() {
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route exact path='/playlists' element={<Playlists />} />
-          <Route exact path='/tracks' element={<Tracks />} />
           <Route exact path='/messages' element={<Messages />} />
           <Route exact path='/friends' element={<Friends />} />
         </Routes>
