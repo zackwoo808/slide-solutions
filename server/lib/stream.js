@@ -45,7 +45,14 @@ async function getAllPlaylists(user_id = 2) {
 async function getAllPlaylistTracks(playlistId) {
   try {
     const playlistTracks = await sql`
-      select *
+      select 
+        t.track_id,
+        t.user_id,
+        t.s3_key,
+        t.title,
+        t.bpm,
+        t.creators,
+        t.music_key
       from public.tracks as t
       join public.playlist_to_track as p2t
       on p2t.track_id = t.track_id and p2t.playlist_id = ${parseInt(playlistId)}
