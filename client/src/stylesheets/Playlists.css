@@ -5,17 +5,17 @@
   border-right: none;
 }
 
+.playlists__active-tracks {
+  width: 100%;
+}
+
 .playlists__controller {
   display: none;
+  width: 100%;
 }
 
 .playlists__controller--visible {
   display: flex;
-}
-
-.playlists__active-tracks {
-  display: flex;
-  flex-direction: column;
 }
 
 @media (min-width: 768px) {

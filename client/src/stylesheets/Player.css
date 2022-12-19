@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: teal;
+  background: linear-gradient(180deg, teal 0%, seashell 100%);
   height: 100px;
 }
 

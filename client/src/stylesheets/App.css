@@ -2,6 +2,17 @@
   display: none;
 }
 
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex--column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .app {
   display: flex;
   flex-direction: column;
