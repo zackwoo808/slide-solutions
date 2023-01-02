@@ -13,7 +13,7 @@ export default function Directory({ playlists, handlePlaylistSelect }) {
       <List sx={{ overflow: 'clip', width: '100%' }} component='nav' aria-labelledby='nested-sub-header' className="playlist__directory">
         {playlists?.map(({ playlist_id, title }, index) => {
           return (
-            <ListItem sx={{ maxHeight: '50px', padding: '0' }} key={index}>
+            <ListItem sx={{ maxHeight: '50px', padding: '0', marginBottom: '10px' }} key={index}>
               <Button sx={{ width: '100%', background: 'teal' }} variant="contained" onClick={() => {
 
                 handlePlaylistSelect(playlist_id, title);

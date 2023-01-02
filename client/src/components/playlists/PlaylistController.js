@@ -16,7 +16,7 @@ export default function PlaylistController() {
   // #region state management
   const [currentTrack, setCurrentTrack] = useState();
   const [activeSoundsPlaylist, setActiveSoundsPlaylist] = useState([]);
-  const [volumeLevel, setVolumeLevel] = useState(10);
+  const [volumeLevel, setVolumeLevel] = useState(50);
   const [trackProgress, setTrackProgress] = useState(0);
   const [duration, setDuration] = useState();
   const [timeElapsed, setTimeElapsed] = useState();
@@ -202,21 +202,21 @@ export default function PlaylistController() {
   // #endregion
   return (
     <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : ''}`}>
-      {activePlaylist?.tracks?.length
-        ? <div className="playlists__active-tracks">
-          <div className="flex">
-            <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
-            <h2 style={{ margin: 0 }}>Playlists</h2>
-          </div>
-          <h3>{activePlaylist.title}</h3>
-          <List sx={{ overflow: 'scroll' }}>
-            {activePlaylist.tracks.map((track, index) => (
-              <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
-            ))}
-          </List>
-        </div>
-        : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Playlists</div>
-      }
+      <div className="playlists__active-tracks">
+              <div className="flex">
+                <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
+                <h2 style={{ margin: 0 }}>Playlists</h2>
+              </div>
+              <h3>{activePlaylist.title}</h3>
+              {activePlaylist?.tracks?.length
+                ? <List sx={{ overflow: 'scroll' }}>
+                    {activePlaylist.tracks.map((track, index) => (
+                      <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+                    ))}
+                  </List>
+                : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Tracks</div>
+              }
+      </div>
       <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />
     </div>
   );
