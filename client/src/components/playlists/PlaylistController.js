@@ -2,8 +2,11 @@ import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
+import '../../stylesheets/App.css';
 import '../../stylesheets/Playlists.css';
 
+import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 
 import Player from '../player/Player';
@@ -34,6 +37,7 @@ export default function PlaylistController() {
   }, [activePlaylist]);
 
   useEffect(() => {
+    Howler.volume(volumeLevel / 100);
     window.addEventListener('updateSlideTrackProgress', e => {
       const { newProgress = 0 } = e.detail || {};
       setTrackProgress(+newProgress);
@@ -64,7 +68,6 @@ export default function PlaylistController() {
           setDuration(formatTime(track.duration()));
         },
         rate: playbackSpeed,
-        volume: volumeLevel / 100,
       });
 
       setActiveSoundsPlaylist(activeSoundsPlaylist.map((item, itemIndex) => itemIndex === index ? { howl: track } : item));
@@ -186,17 +189,32 @@ export default function PlaylistController() {
   }, [currentTrack]);
   // #endregion player methods
 
+  // #region event handlers
+  const onBackClick = useCallback(() => {
+    if (currentTrack) {
+      currentTrack.stop();
+    }
+
+    dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: [], title: '' } });
+    dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: true });
+    dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: false });
+  }, []);
+  // #endregion
   return (
-    <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : '' }`}>
+    <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : ''}`}>
       {activePlaylist?.tracks?.length
         ? <div className="playlists__active-tracks">
-            <h2>{activePlaylist.title}</h2>
-            <List sx={{ overflow: 'scroll', paddingLeft: '10px' }}>
-              {activePlaylist.tracks.map((track, index) => (
-                <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
-              ))}
-            </List>
+          <div className="flex">
+            <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
+            <h2 style={{ margin: 0 }}>Playlists</h2>
           </div>
+          <h3>{activePlaylist.title}</h3>
+          <List sx={{ overflow: 'scroll' }}>
+            {activePlaylist.tracks.map((track, index) => (
+              <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+            ))}
+          </List>
+        </div>
         : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Playlists</div>
       }
       <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />

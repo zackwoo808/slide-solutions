@@ -1,7 +1,15 @@
 .track__creators {
+  display: none;
   max-height: '20px';
   width: '250px';
   overflow: 'hidden';
   white-space: 'nowrap';
   text-overflow: 'ellipsis';
+  flex: 0 1 30%;
+}
+
+@media (min-width: 768px) {
+  .track__creators {
+    display: block;
+  }
 }

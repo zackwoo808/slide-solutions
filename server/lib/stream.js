@@ -7,7 +7,7 @@ function getTrackStream(trackKey, cb) {
       Bucket: process.env.AWS_S3_BUCKET_NAME,
       Key: trackKey,
       ResponseContentType: 'stream',
-      Range: 'bytes=16561-8065611',
+      Range: 'bytes=0-8065611',
     }, cb);
   } catch (err) {
     console.log(new Error(err));
