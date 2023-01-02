@@ -14,7 +14,7 @@ export default function Directory({ playlists, handlePlaylistSelect }) {
         {playlists?.map(({ playlist_id, title }, index) => {
           return (
             <ListItem sx={{ maxHeight: '50px', padding: '0' }} key={index}>
-              <Button sx={{ width: '100%' }} variant="outlined" onClick={() => {
+              <Button sx={{ width: '100%', background: 'teal' }} variant="contained" onClick={() => {
 
                 handlePlaylistSelect(playlist_id, title);
               }}>

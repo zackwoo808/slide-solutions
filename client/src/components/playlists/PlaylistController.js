@@ -6,7 +6,6 @@ import '../../stylesheets/App.css';
 import '../../stylesheets/Playlists.css';
 
 import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 
@@ -38,6 +37,7 @@ export default function PlaylistController() {
   }, [activePlaylist]);
 
   useEffect(() => {
+    Howler.volume(volumeLevel / 100);
     window.addEventListener('updateSlideTrackProgress', e => {
       const { newProgress = 0 } = e.detail || {};
       setTrackProgress(+newProgress);
@@ -68,7 +68,6 @@ export default function PlaylistController() {
           setDuration(formatTime(track.duration()));
         },
         rate: playbackSpeed,
-        volume: volumeLevel / 100,
       });
 
       setActiveSoundsPlaylist(activeSoundsPlaylist.map((item, itemIndex) => itemIndex === index ? { howl: track } : item));

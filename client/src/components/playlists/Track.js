@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import '../../stylesheets/Track.css';
 
+import DownloadIcon from '@mui/icons-material/Download';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from '@mui/material/IconButton';
@@ -77,8 +78,8 @@ export default function Track({ index, track: { title, music_key, s3_key, bpm, c
       <p style={{ flex: '1 1 20%' }}>{music_key}</p>
       <IconButton sx={{ flexBasis: '0 1 auto' }} aria-label="more info" onClick={onMoreInfoOpen}><MoreHorizIcon /></IconButton>
       <Menu id="basic-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={onMoreInfoClose} MenuListProps={{ 'aria-labelledby': 'basic-button' }} >
-        <MenuItem sx={{ overflow: 'scroll' }} divider="true">Creators: {creators}</MenuItem>
-        <MenuItem onClick={onDownloadClick}>Download</MenuItem>
+        <MenuItem sx={{ overflow: 'scroll' }} divider={true}>Creators: {creators}</MenuItem>
+        <MenuItem onClick={onDownloadClick}><DownloadIcon /> Download</MenuItem>
       </Menu>
     </ListItem>
   );
