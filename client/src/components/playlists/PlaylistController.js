@@ -11,6 +11,7 @@ import List from '@mui/material/List';
 
 import Player from '../player/Player';
 import Track from './Track';
+import UploadDialog from './UploadDialog';
 
 export default function PlaylistController() {
   // #region state management
@@ -207,14 +208,17 @@ export default function PlaylistController() {
                 <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
                 <h2 style={{ margin: 0 }}>Playlists</h2>
               </div>
-              <h3>{activePlaylist.title}</h3>
+              <div className="flex">
+                <h3>{activePlaylist.title}</h3>
+                <UploadDialog />
+              </div>
               {activePlaylist?.tracks?.length
                 ? <List sx={{ overflow: 'scroll' }}>
                     {activePlaylist.tracks.map((track, index) => (
                       <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
                     ))}
                   </List>
-                : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Tracks</div>
+                : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Add Tracks</div>
               }
       </div>
       <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />

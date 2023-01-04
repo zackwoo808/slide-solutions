@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
-import PersonAddAltRoundedIcon from '@mui/icons-material/PersonAddAltRounded';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 import SlideIcon from '../playlists/SlideIcon';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
@@ -26,7 +26,7 @@ const pages = [
   {component: HomeIcon, route: '/'},
   {component: LibraryMusicIcon, route: '/playlists'},
   {component: ForumRoundedIcon, route: '/messages'},
-  {component: PersonAddAltRoundedIcon, route: '/friends'},
+  {component: Diversity3Icon, route: '/friends'},
 ];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
