@@ -9,6 +9,7 @@ const {
   getAllPlaylists,
   getAllPlaylistTracks,
 } = require('./lib/stream');
+const { addPlaylist } = require('./lib/playlist');
 
 const PORT = process.env.PORT || 3001;
 
@@ -18,6 +19,8 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(cors({
     origin: ['http://localhost:3000', 'https://slide-solutions.surge.sh', 'http://slide-solutions.surge.sh']
 }));
+// parse application/json
+app.use(express.json());
 
 app.get('/api/welcome-message', (req, res) => {
   res.json({ message: 'welcome home, homie!' });
@@ -123,6 +126,23 @@ app.get('/download/:trackKey', async (req, res) => {
     .catch (err => res
       .status(500)
       .json(err));
+});
+
+app.post('/playlists/add', async (req, res) => {
+  const { body: { title }, user: { id = 2 } = {} } = req;
+
+  try {
+    await addPlaylist(id, title);
+    const updatedPlaylists = await getAllPlaylists(id);
+
+    res
+      .status(200)
+      .json({ playlists: updatedPlaylists })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .json(err);
+  }
 });
 
 app.get('*', (req, res) => {

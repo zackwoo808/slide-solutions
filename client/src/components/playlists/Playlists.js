@@ -35,13 +35,28 @@ export default function Playlists() {
       })
       .catch(err => console.log(err));
   }, []);
+
+  const handlePlaylistCreate = useCallback((title) => {
+    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/add`, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+      },
+      body: JSON.stringify({ title })
+    })
+      .then(res => res.json())
+      .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
+      .catch(err => console.log(err));
+  }, []);
   // #endregion helper methods
 
   return (
     <div className="app__main">
       {isPlayerVisible
         ? <></> 
-        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />}
+        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} handlePlaylistCreate={handlePlaylistCreate} />}
       <PlaylistController />
     </div>
   );

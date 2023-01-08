@@ -10,8 +10,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
-export default function NewPlaylistDialog() {
+export default function NewPlaylistDialog({ handlePlaylistCreate }) {
   const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,20 +22,33 @@ export default function NewPlaylistDialog() {
     setOpen(false);
   };
 
+  const handleCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const title = e.currentTarget[0]?.value;
+      await handlePlaylistCreate(title);
+      handleClose();
+    } catch {
+      handleClose();
+    }
+  };
+
   return (
     <div>
       <IconButton onClick={handleClickOpen} title="Add Playlist">
         <PlaylistAddIcon fontSize='medium' />
       </IconButton>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Playlist</DialogTitle>
-        <DialogContent>
-          <TextField autoFocus margin="normal" id="title" label="Title" type="text" fullWidth variant="standard" />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Create</Button>
-        </DialogActions>
+        <form onSubmit={handleCreate}>
+          <DialogTitle>New Playlist</DialogTitle>
+          <DialogContent>
+            <TextField autoFocus margin="normal" id="addPlaylistTitle" label="Title" type="text" fullWidth variant="standard" />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button type="submit">Create</Button>
+          </DialogActions>
+        </form>
       </Dialog>
     </div>
   );
