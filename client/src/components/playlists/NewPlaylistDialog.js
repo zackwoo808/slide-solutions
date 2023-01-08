@@ -1,4 +1,3 @@
-// currently unused
 import { useState } from 'react';
 
 import DialogTitle from '@mui/material/DialogTitle';
@@ -12,7 +11,6 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 export default function NewPlaylistDialog({ handlePlaylistCreate }) {
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);

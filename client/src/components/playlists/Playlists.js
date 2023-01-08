@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import '../../stylesheets/App.css';
 
-import Directory from './Directory.js';
+import PlaylistDirectory from './PlaylistDirectory.js';
 import PlaylistController from './PlaylistController.js';
 
 export default function Playlists() {
@@ -56,7 +56,7 @@ export default function Playlists() {
     <div className="app__main">
       {isPlayerVisible
         ? <></> 
-        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} handlePlaylistCreate={handlePlaylistCreate} />}
+        : <PlaylistDirectory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} handlePlaylistCreate={handlePlaylistCreate} />}
       <PlaylistController />
     </div>
   );

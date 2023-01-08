@@ -94,6 +94,10 @@ button {
   cursor: pointer;
 }
 
+.button--focused {
+  outline: green;
+}
+
 @media (min-width: 768px) {
   .app__wrap {
     height: calc(100vh - 108px);

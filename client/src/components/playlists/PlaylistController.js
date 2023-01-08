@@ -11,7 +11,7 @@ import List from '@mui/material/List';
 
 import Player from '../player/Player';
 import Track from './Track';
-import UploadDialog from './UploadDialog';
+import UploadTrackDialog from './UploadTrackDialog';
 
 export default function PlaylistController() {
   // #region state management
@@ -210,7 +210,7 @@ export default function PlaylistController() {
               </div>
               <div className="flex">
                 <h3>{activePlaylist.title}</h3>
-                <UploadDialog />
+                <UploadTrackDialog />
               </div>
               {activePlaylist?.tracks?.length
                 ? <List sx={{ overflow: 'scroll' }}>

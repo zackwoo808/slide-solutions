@@ -5,6 +5,19 @@
   border-right: none;
 }
 
+.playlists__new-track {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.playlists__new-track-name {
+  overflow-x: scroll;
+  white-space: nowrap;
+  max-width: 100px;
+  margin-left: 10px;
+}
+
 .playlists__active-tracks {
   width: 100%;
 }
