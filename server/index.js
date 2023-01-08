@@ -1,6 +1,8 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const fileUpload = require('multer');
 const { Readable } = require('stream');
 
 const {
@@ -20,7 +22,8 @@ app.use(cors({
     origin: ['http://localhost:3000', 'https://slide-solutions.surge.sh', 'http://slide-solutions.surge.sh']
 }));
 // parse application/json
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/api/welcome-message', (req, res) => {
   res.json({ message: 'welcome home, homie!' });
@@ -143,6 +146,12 @@ app.post('/playlists/add', async (req, res) => {
       .status(err.status || 500)
       .json(err);
   }
+});
+
+app.post('/upload', fileUpload().single('file'), (req, res) => {
+  const { body: { title, creators, genre, key, BPM, type }, file } = req;
+
+  
 });
 
 app.get('*', (req, res) => {

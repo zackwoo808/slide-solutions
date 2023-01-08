@@ -22,6 +22,7 @@ export default function UploadTrackDialog() {
   const [musicKey, setMusicKey] = useState('C');
   const [file, setFile] = useState('');
   const [title, setTitle] = useState('');
+  const [creators, setCreators] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,10 +52,15 @@ export default function UploadTrackDialog() {
     setTitle(title.join(' '));
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const track = e.currentTarget[6]?.files[0];
-    
+    const formData = new FormData(e.currentTarget);
+    const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+      method: 'POST',
+      cache: 'no-cache',
+      body: formData
+    });
+    console.log(response);
   };
 
   const BPMs = Array.from(new Array(200), (el, index) => ++index);
@@ -69,9 +75,9 @@ export default function UploadTrackDialog() {
         <form onSubmit={onSubmit}>
           <DialogTitle>Upload Track</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="normal" id="title" label="Title" type="text" value={title} fullWidth variant="standard" />
-            <TextField autoFocus margin="normal" id="creators" label="Creators" type="text" fullWidth variant="standard" />
-            <TextField autoFocus margin="normal" id="genre" label="Genre" type="text" fullWidth variant="standard" />
+            <TextField autoFocus margin="normal" id="title" name="title" label="Title" type="text" value={title} fullWidth variant="standard" />
+            <TextField autoFocus margin="normal" id="creators" name="creators" label="Creators" type="text" fullWidth variant="standard" />
+            <TextField autoFocus margin="normal" id="genre" label="Genre" name="genre" type="text" fullWidth variant="standard" />
             <FormControl variant="standard" fullWidth margin="normal">
               <InputLabel id="track-music-key-label">Key</InputLabel>
               <Select
@@ -80,6 +86,7 @@ export default function UploadTrackDialog() {
                 value={musicKey}
                 onChange={handleKeyChange}
                 label="MusicKey"
+                name="key"
               >
                 {Keys.map((item, index) => <MenuItem key={`${item}_${index}`} value={item}>{item}</MenuItem>)}
               </Select>
@@ -92,6 +99,7 @@ export default function UploadTrackDialog() {
                 value={BPM}
                 onChange={handleBPMChange}
                 label="BPM"
+                name="BPM"
               >
                 {BPMs.map((item, index) => <MenuItem key={`${item}_${index}`} value={item}>{item}</MenuItem>)}
               </Select>
@@ -104,6 +112,7 @@ export default function UploadTrackDialog() {
                 value={type}
                 onChange={handleTypeChange}
                 label="Type"
+                name="type"
               >
                 <MenuItem value=""><em>None</em></MenuItem>
                 <MenuItem value="beat">Beat</MenuItem>
@@ -114,7 +123,7 @@ export default function UploadTrackDialog() {
             <div className="playlists__new-track">
               <Button variant="contained" component="label">
                 Choose track
-                <input id="uploadInput" onChange={onChooseTrack} hidden accept="audio/mp3" type="file" />
+                <input id="uploadInput" type="file" name="file" onChange={onChooseTrack} hidden accept="audio/mp3" />
               </Button>
               <span className="playlists__new-track-name">{file}</span>
             </div>

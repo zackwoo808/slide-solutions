@@ -16,7 +16,7 @@ export default function Playlists() {
   // #region lifecycle methods
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
+    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
       .then(res => res.json())
       .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
       .catch(err => console.log(err));
