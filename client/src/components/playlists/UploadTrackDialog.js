@@ -60,13 +60,10 @@ export default function UploadTrackDialog({ playlistId, handleUploadTrack }) {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     formData.append('playlistId', playlistId);
-    try {
-      const response = await handleUploadTrack(formData);
-    
-      alert('Success');
+    try {    
       handleClose();
     } catch (err) {
-      alert(`Error: ${err}`);
+      alert('Error uploading track');
       handleClose();
     }    
   };
