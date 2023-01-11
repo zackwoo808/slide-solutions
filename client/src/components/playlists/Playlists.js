@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import '../../stylesheets/App.css';
 
-import Directory from './Directory.js';
+import PlaylistDirectory from './PlaylistDirectory.js';
 import PlaylistController from './PlaylistController.js';
 
 export default function Playlists() {
@@ -29,10 +29,25 @@ export default function Playlists() {
     return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
       .then(res => res.json())
       .then((data) => {
-        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title } });
+        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title, id } });
         dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: false });
         dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: true });
       })
+      .catch(err => console.log(err));
+  }, []);
+
+  const handlePlaylistCreate = useCallback((title) => {
+    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/add`, {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept':'application/json',
+      },
+      body: JSON.stringify({ title })
+    })
+      .then(res => res.json())
+      .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
       .catch(err => console.log(err));
   }, []);
   // #endregion helper methods
@@ -41,7 +56,7 @@ export default function Playlists() {
     <div className="app__main">
       {isPlayerVisible
         ? <></> 
-        : <Directory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} />}
+        : <PlaylistDirectory playlists={currentPlaylists} handlePlaylistSelect={handlePlaylistSelect} handlePlaylistCreate={handlePlaylistCreate} />}
       <PlaylistController />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
@@ -11,12 +11,13 @@ import List from '@mui/material/List';
 
 import Player from '../player/Player';
 import Track from './Track';
+import UploadTrackDialog from './UploadTrackDialog';
 
 export default function PlaylistController() {
   // #region state management
   const [currentTrack, setCurrentTrack] = useState();
   const [activeSoundsPlaylist, setActiveSoundsPlaylist] = useState([]);
-  const [volumeLevel, setVolumeLevel] = useState(10);
+  const [volumeLevel, setVolumeLevel] = useState(50);
   const [trackProgress, setTrackProgress] = useState(0);
   const [duration, setDuration] = useState();
   const [timeElapsed, setTimeElapsed] = useState();
@@ -28,7 +29,6 @@ export default function PlaylistController() {
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
   const isPlaying = useSelector(state => state.isPlaying);
   const isPlayerVisible = useSelector(state => state.isPlayerVisible);
-
   // #endregion state management
 
   // #region lifecycle methods
@@ -199,24 +199,44 @@ export default function PlaylistController() {
     dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: true });
     dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: false });
   }, []);
+
+  const handleUploadTrack = useCallback(async (formData) => {
+    try {
+      let response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData
+      });
+
+      response = await response.json();
+      dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: response.data, title: activePlaylist.title, id: activePlaylist.id }});
+
+      return response;
+    } catch (err) {
+      return err;
+    }
+  }, [activePlaylist]);
   // #endregion
   return (
     <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : ''}`}>
-      {activePlaylist?.tracks?.length
-        ? <div className="playlists__active-tracks">
-          <div className="flex">
-            <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
-            <h2 style={{ margin: 0 }}>Playlists</h2>
-          </div>
-          <h3>{activePlaylist.title}</h3>
-          <List sx={{ overflow: 'scroll' }}>
-            {activePlaylist.tracks.map((track, index) => (
-              <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
-            ))}
-          </List>
-        </div>
-        : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>No Playlists</div>
-      }
+      <div className="playlists__active-tracks">
+              <div className="flex">
+                <IconButton onClick={onBackClick} sx={{ padding: '0 20px 0 0' }}><ArrowBackIosNewSharpIcon /></IconButton>
+                <h2 style={{ margin: 0 }}>Playlists</h2>
+              </div>
+              <div className="flex">
+                <h3>{activePlaylist.title}</h3>
+                <UploadTrackDialog playlistId={activePlaylist.id} handleUploadTrack={handleUploadTrack} />
+              </div>
+              {activePlaylist?.tracks?.length
+                ? <List sx={{ overflow: 'scroll' }}>
+                    {activePlaylist.tracks.map((track, index) => (
+                      <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+                    ))}
+                  </List>
+                : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Add Tracks</div>
+              }
+      </div>
       <Player duration={duration} onNext={onNext} onPause={onPause} onPlay={onPlay} onPlaybackSpeedChange={onPlaybackSpeedChange} onPrev={onPrev} onSeek={onSeek} onSeekComplete={onSeekComplete} onVolumeChange={onVolumeChange} playbackSpeed={playbackSpeed} timeElapsed={timeElapsed} trackProgress={trackProgress} volumeLevel={volumeLevel} />
     </div>
   );

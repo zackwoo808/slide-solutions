@@ -1,6 +1,8 @@
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const fileUpload = require('multer');
 const { Readable } = require('stream');
 
 const {
@@ -9,6 +11,8 @@ const {
   getAllPlaylists,
   getAllPlaylistTracks,
 } = require('./lib/stream');
+const { addPlaylist } = require('./lib/playlist');
+const { createTrackEntry, uploadTrack } = require('./lib/upload');
 
 const PORT = process.env.PORT || 3001;
 
@@ -18,6 +22,9 @@ app.use(express.static(path.resolve(__dirname, '../client/build')));
 app.use(cors({
     origin: ['http://localhost:3000', 'https://slide-solutions.surge.sh', 'http://slide-solutions.surge.sh']
 }));
+// parse application/json
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/api/welcome-message', (req, res) => {
   res.json({ message: 'welcome home, homie!' });
@@ -123,6 +130,63 @@ app.get('/download/:trackKey', async (req, res) => {
     .catch (err => res
       .status(500)
       .json(err));
+});
+
+app.post('/playlists/add', async (req, res) => {
+  const { body: { title }, user: { id = 2 } = {} } = req;
+
+  try {
+    await addPlaylist(id, title);
+    const updatedPlaylists = await getAllPlaylists(id);
+
+    res
+      .status(200)
+      .json({ playlists: updatedPlaylists })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .json(err);
+  }
+});
+
+app.post('/upload', fileUpload().single('file'), (req, res) => {
+  const { body: { title, creators, genre, key, BPM, type, playlistId }, file, user: { id: userId = 2 } = {} } = req;
+
+  uploadTrack(file, async (err, response) => {
+    if (err || !response) {
+      return res
+        .status(500)
+        .json(err);
+    }
+
+    try {
+      const dbResponse = await createTrackEntry({
+        userId,
+        s3Key: file.originalname,
+        title,
+        BPM,
+        creators,
+        musicKey: key,
+        genre,
+        type,
+        playlistId 
+      });
+
+      res
+        .status(dbResponse.status)
+        .json({
+          status: 201,
+          msg: 'Success Created',
+          data: dbResponse.tracks
+        });
+    } catch (err) {
+      return res
+      .status(500)
+      .json({
+        msg: err
+      });
+    }
+  });
 });
 
 app.get('*', (req, res) => {

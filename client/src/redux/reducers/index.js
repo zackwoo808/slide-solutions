@@ -2,6 +2,7 @@ const initialState = {
   activePlaylist: {
     tracks: [],
     title: '',
+    id: 0
   },
   currentPlaylists: [],
   currentTrackIndex: 0,
@@ -42,6 +43,7 @@ export default function rootReducer(state = initialState, action) {
         activePlaylist: {
           tracks: action.data.tracks,
           title: action.data.title,
+          id: action.data.id
         }
       };
     case 'UPDATE_CURRENT_PLAYLISTS':
