@@ -1,4 +1,19 @@
+const { s3Client } = require('./s3Client');
 const sql = require('./db');
+
+function uploadTrack(file, cb) {
+  try {
+    return s3Client.upload({
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: file.originalname,
+      Body: file.buffer,
+      ContentType: 'audio/mpeg',
+    }, cb);
+  } catch (err) {
+    console.log(new Error(err));
+    cb(err, null);
+  }
+}
 
 async function createTrackEntry(opts) {
   const { userId, s3Key, title, BPM, creators, musicKey, genre, type, playlistId } = opts || {};
@@ -32,4 +47,5 @@ async function createTrackEntry(opts) {
 
 module.exports = {
   createTrackEntry,
+  uploadTrack,
 };

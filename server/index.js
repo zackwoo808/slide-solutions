@@ -10,10 +10,9 @@ const {
   getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
-  uploadTrack
 } = require('./lib/stream');
 const { addPlaylist } = require('./lib/playlist');
-const { createTrackEntry } = require('./lib/upload');
+const { createTrackEntry, uploadTrack } = require('./lib/upload');
 
 const PORT = process.env.PORT || 3001;
 

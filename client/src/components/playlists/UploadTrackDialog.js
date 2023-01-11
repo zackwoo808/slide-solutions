@@ -61,17 +61,15 @@ export default function UploadTrackDialog({ playlistId }) {
     const formData = new FormData(e.currentTarget);
     formData.append('playlistId', playlistId);
     try {
-      let response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+      await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
         method: 'POST',
         cache: 'no-cache',
         body: formData
       });
-
-      response = response.json();
     
-      alert(response);
+      alert('Success');
     } catch (err) {
-      alert(err.message);
+      alert(`Error: ${err}`);
     }    
   };
 
