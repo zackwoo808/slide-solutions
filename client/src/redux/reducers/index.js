@@ -42,6 +42,7 @@ export default function rootReducer(state = initialState, action) {
         activePlaylist: {
           tracks: action.data.tracks,
           title: action.data.title,
+          id: action.data.id
         }
       };
     case 'UPDATE_CURRENT_PLAYLISTS':

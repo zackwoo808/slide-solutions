@@ -27,6 +27,21 @@ function getTrack(trackKey, cb) {
   }
 }
 
+function uploadTrack(file, cb) {
+  try {
+    const fileData = file.buffer.toString('binary');
+
+    return s3Client.putObject({
+      Bucket: process.env.AWS_S3_BUCKET_NAME,
+      Key: file.originalname,
+      Body: fileData
+    }, cb);
+  } catch (err) {
+    console.log(new Error(err));
+    cb(err, null);
+  }
+}
+
 async function getAllPlaylists(user_id = 2) {
   try {
     const playlists = await sql`
@@ -69,4 +84,5 @@ module.exports = {
   getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
+  uploadTrack,
 };

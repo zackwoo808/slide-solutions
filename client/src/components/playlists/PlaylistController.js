@@ -210,7 +210,7 @@ export default function PlaylistController() {
               </div>
               <div className="flex">
                 <h3>{activePlaylist.title}</h3>
-                <UploadTrackDialog />
+                <UploadTrackDialog playlistId={activePlaylist.id} />
               </div>
               {activePlaylist?.tracks?.length
                 ? <List sx={{ overflow: 'scroll' }}>

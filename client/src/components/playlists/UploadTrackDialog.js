@@ -15,14 +15,13 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import '../../stylesheets/Playlists.css';
 
-export default function UploadTrackDialog() {
+export default function UploadTrackDialog({ playlistId }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState('');
   const [BPM, setBPM] = useState(1);
   const [musicKey, setMusicKey] = useState('C');
   const [file, setFile] = useState('');
   const [title, setTitle] = useState('');
-  const [creators, setCreators] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,15 +51,28 @@ export default function UploadTrackDialog() {
     setTitle(title.join(' '));
   };
 
+  const onTitleChange = (e) => {
+    const title = e.currentTarget.value;
+    setTitle(title);
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
-      method: 'POST',
-      cache: 'no-cache',
-      body: formData
-    });
-    console.log(response);
+    formData.append('playlistId', playlistId);
+    try {
+      let response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData
+      });
+
+      response = response.json();
+    
+      alert(response);
+    } catch (err) {
+      alert(err.message);
+    }    
   };
 
   const BPMs = Array.from(new Array(200), (el, index) => ++index);
@@ -75,7 +87,7 @@ export default function UploadTrackDialog() {
         <form onSubmit={onSubmit}>
           <DialogTitle>Upload Track</DialogTitle>
           <DialogContent>
-            <TextField autoFocus margin="normal" id="title" name="title" label="Title" type="text" value={title} fullWidth variant="standard" />
+            <TextField autoFocus margin="normal" id="title" name="title" label="Title" type="text" value={title} onChange={onTitleChange} fullWidth variant="standard" />
             <TextField autoFocus margin="normal" id="creators" name="creators" label="Creators" type="text" fullWidth variant="standard" />
             <TextField autoFocus margin="normal" id="genre" label="Genre" name="genre" type="text" fullWidth variant="standard" />
             <FormControl variant="standard" fullWidth margin="normal">

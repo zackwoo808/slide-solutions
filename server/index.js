@@ -10,8 +10,10 @@ const {
   getTrackStream,
   getAllPlaylists,
   getAllPlaylistTracks,
+  uploadTrack
 } = require('./lib/stream');
 const { addPlaylist } = require('./lib/playlist');
+const { createTrackEntry } = require('./lib/upload');
 
 const PORT = process.env.PORT || 3001;
 
@@ -149,9 +151,42 @@ app.post('/playlists/add', async (req, res) => {
 });
 
 app.post('/upload', fileUpload().single('file'), (req, res) => {
-  const { body: { title, creators, genre, key, BPM, type }, file } = req;
+  const { body: { title, creators, genre, key, BPM, type, playlistId }, file, user: { id: userId = 2 } = {} } = req;
 
-  
+  uploadTrack(file, async (err, response) => {
+    if (err || !response) {
+      return res
+        .status(500)
+        .json(err);
+    }
+
+    try {
+      const dbResponse = await createTrackEntry({
+        userId,
+        s3Key: file.originalname,
+        title,
+        BPM,
+        creators,
+        musicKey: key,
+        genre,
+        type,
+        playlistId 
+      });
+
+      res
+        .status(dbResponse.status)
+        .json({
+          status: 201,
+          msg: 'Success Created'
+        });
+    } catch (err) {
+      return res
+      .status(500)
+      .json({
+        msg: err
+      });
+    }
+  });
 });
 
 app.get('*', (req, res) => {

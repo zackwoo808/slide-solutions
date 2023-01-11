@@ -16,7 +16,7 @@ export default function Playlists() {
   // #region lifecycle methods
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
-    return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
       .then(res => res.json())
       .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
       .catch(err => console.log(err));
@@ -29,7 +29,7 @@ export default function Playlists() {
     return fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${id}/tracks`)
       .then(res => res.json())
       .then((data) => {
-        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title } });
+        dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data, title, id } });
         dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: false });
         dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: true });
       })
