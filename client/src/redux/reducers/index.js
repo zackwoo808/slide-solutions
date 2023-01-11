@@ -2,6 +2,7 @@ const initialState = {
   activePlaylist: {
     tracks: [],
     title: '',
+    id: 0
   },
   currentPlaylists: [],
   currentTrackIndex: 0,

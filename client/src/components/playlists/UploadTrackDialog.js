@@ -15,7 +15,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import '../../stylesheets/Playlists.css';
 
-export default function UploadTrackDialog({ playlistId }) {
+export default function UploadTrackDialog({ playlistId, handleUploadTrack }) {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState('');
   const [BPM, setBPM] = useState(1);
@@ -61,15 +61,13 @@ export default function UploadTrackDialog({ playlistId }) {
     const formData = new FormData(e.currentTarget);
     formData.append('playlistId', playlistId);
     try {
-      await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
-        method: 'POST',
-        cache: 'no-cache',
-        body: formData
-      });
+      const response = await handleUploadTrack(formData);
     
       alert('Success');
+      handleClose();
     } catch (err) {
       alert(`Error: ${err}`);
+      handleClose();
     }    
   };
 

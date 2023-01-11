@@ -1,5 +1,6 @@
 const { s3Client } = require('./s3Client');
 const sql = require('./db');
+const { getAllPlaylistTracks } = require('./stream');
 
 function uploadTrack(file, cb) {
   try {
@@ -36,8 +37,11 @@ async function createTrackEntry(opts) {
       values (${trackId}, ${playlistId})
     `;
 
+    const tracks = await getAllPlaylistTracks(playlistId);
+
     return {
-      status: 201
+      status: 201,
+      tracks 
     };
   } catch (err) {
     console.log(new Error(err));

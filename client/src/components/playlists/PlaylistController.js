@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
 
@@ -29,7 +29,6 @@ export default function PlaylistController() {
   const currentTrackIndex = useSelector(state => state.currentTrackIndex);
   const isPlaying = useSelector(state => state.isPlaying);
   const isPlayerVisible = useSelector(state => state.isPlayerVisible);
-
   // #endregion state management
 
   // #region lifecycle methods
@@ -200,6 +199,23 @@ export default function PlaylistController() {
     dispatch({ type: 'TOGGLE_PLAYER_DISABLED', isPlayerDisabled: true });
     dispatch({ type: 'TOGGLE_PLAYER_VISIBLE', isPlayerVisible: false });
   }, []);
+
+  const handleUploadTrack = useCallback(async (formData) => {
+    try {
+      let response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData
+      });
+
+      response = await response.json();
+      dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: response.data, title: activePlaylist.title, id: activePlaylist.id }});
+
+      return response;
+    } catch (err) {
+      return err;
+    }
+  }, [activePlaylist]);
   // #endregion
   return (
     <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : ''}`}>
@@ -210,7 +226,7 @@ export default function PlaylistController() {
               </div>
               <div className="flex">
                 <h3>{activePlaylist.title}</h3>
-                <UploadTrackDialog playlistId={activePlaylist.id} />
+                <UploadTrackDialog playlistId={activePlaylist.id} handleUploadTrack={handleUploadTrack} />
               </div>
               {activePlaylist?.tracks?.length
                 ? <List sx={{ overflow: 'scroll' }}>

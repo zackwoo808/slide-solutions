@@ -176,7 +176,8 @@ app.post('/upload', fileUpload().single('file'), (req, res) => {
         .status(dbResponse.status)
         .json({
           status: 201,
-          msg: 'Success Created'
+          msg: 'Success Created',
+          data: dbResponse.tracks
         });
     } catch (err) {
       return res
