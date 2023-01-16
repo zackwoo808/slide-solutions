@@ -27,7 +27,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/api/welcome-message', (req, res) => {
-  res.json({ message: 'welcome home, homie!' });
+  res.json({
+    message: 'Your music production network. All on one platform.'
+  });
 });
 
 app.get('/playlists/:userId', async (req, res) => {
