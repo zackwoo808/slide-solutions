@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import '../../stylesheets/App.css';
 
@@ -11,12 +12,12 @@ export default function Playlists() {
   const dispatch = useDispatch();
   const currentPlaylists = useSelector(state => state.currentPlaylists);
   const isPlayerVisible = useSelector(state => state.isPlayerVisible);
+  const { user, isAuthenticated, isLoading } = useAuth0();
   // #endregion state management
 
   // #region lifecycle methods
   useEffect(() => {
-    const queryParams = new URLSearchParams(window.location.search);
-    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists/${queryParams.get('userId') || 2}`)
+    fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/playlists`)
       .then(res => res.json())
       .then(data => dispatch({ type: 'UPDATE_CURRENT_PLAYLISTS', data: data?.playlists }))
       .catch(err => console.log(err));
