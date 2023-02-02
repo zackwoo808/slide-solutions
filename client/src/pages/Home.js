@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import Typography from '@mui/material/Typography';
 
@@ -11,6 +12,7 @@ export default function Home() {
   // #region state management
   const dispatch = useDispatch();
   const welcomeMessage = useSelector(state => state.welcomeMessage);
+  const { user, isAuthenticated } = useAuth0();
   // #endregion state management
 
   // #region lifecycle methods
@@ -25,7 +27,9 @@ export default function Home() {
   return (
     <div className="app__wrap app__flex-column">
       <SlideIcon sx={{ display: 'flex', color: '#394149', height: '137px', width: '94px', margin: '50px' }} />
-      <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 400 }}>{welcomeMessage}</Typography>
-    </div>
+      <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 400 }}>
+        {isAuthenticated ? `Welcome, ${user.name}.` : welcomeMessage}
+      </Typography>
+    </div >
   );
 }

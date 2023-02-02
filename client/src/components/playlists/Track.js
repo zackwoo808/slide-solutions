@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
+
 
 import '../../stylesheets/Track.css';
 
@@ -13,6 +15,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 export default function Track({ index, track: { title, music_key, s3_key, bpm, creators }, onPause, onPlay }) {
+  const { getAccessTokenSilently } = useAuth0();
   // #region state management
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -49,7 +52,13 @@ export default function Track({ index, track: { title, music_key, s3_key, bpm, c
 
   const onDownloadClick = useCallback(async (e) => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/download/${s3_key}`);
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/download/${s3_key}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const blob = await response.blob();
       const url = await URL.createObjectURL(blob);
       // Download file

@@ -50,8 +50,9 @@ const LogoutButton = ({ handleCloseUserMenu }) => {
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
 
+  // #region event handlers
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -66,6 +67,7 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  // #endregion
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#FFFFFF', color: '#394149' }}>

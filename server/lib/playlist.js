@@ -19,6 +19,25 @@ async function addPlaylist(userId, title) {
   }
 }
 
+async function deletePlaylist(userId, title) {
+  try {
+    await sql`
+      DELETE FROM public.playlists WHERE user_id=${userId} AND title=${title}
+    `;
+
+    return {
+      status: 200
+    };
+  } catch (err) {
+    console.log(new Error(err));
+    return {
+      status: 404,
+      err
+    };
+  }
+}
+
 module.exports = {
   addPlaylist,
+  deletePlaylist,
 };
