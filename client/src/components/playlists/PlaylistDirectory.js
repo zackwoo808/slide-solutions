@@ -55,7 +55,7 @@ export default function Directory({ playlists, handlePlaylistSelect, handlePlayl
               }}>
                 <ListItemText primary={title} />
               </Button>
-              <Button onClick={onDeleteClick.bind(this, title)}>Delete</Button>
+              { title !== 'Library' ? <Button onClick={onDeleteClick.bind(this, title)}>Delete</Button> : null }
             </ListItem>
           );
         })}
