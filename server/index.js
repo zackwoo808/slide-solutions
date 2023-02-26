@@ -120,7 +120,7 @@ app.get('/playlists/:playlistId/tracks', checkJwt, async (req, res) => {
   }
 });
 
-app.get('/audio/:trackKey', checkJwt, (req, res) => {
+app.get('/audio/:trackKey', (req, res) => {
   const { params: { trackKey } } = req;
 
   getTrackStream(trackKey, (err, response) => {

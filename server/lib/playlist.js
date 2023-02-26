@@ -2,6 +2,20 @@ const sql = require('./db');
 
 async function addPlaylist(userId, title) {
   try {
+    // const response = await sql `
+    //   select exists(select p.title
+    //   from public.playlists as p
+    //   where p.user_id=${userId} AND p.title='Library') AS "libraryExists"
+    // `;
+
+    // const { libraryExists } = Array.isArray(response) ? response[0] : {};
+    // if (!libraryExists) {
+    //   await sql`
+    //     insert into public.playlists (user_id, title)
+    //     values (${userId}, 'Library')
+    //   `;
+    // }
+
     await sql`
       insert into public.playlists (user_id, title)
       values (${userId}, ${title})
