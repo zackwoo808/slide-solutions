@@ -94,8 +94,9 @@ button {
   cursor: pointer;
 }
 
+html .Mui-focusVisible,
 .button--focused {
-  outline: green;
+  outline: auto;
 }
 
 @media (min-width: 768px) {
