@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,23 +18,41 @@ import HomeIcon from '@mui/icons-material/Home';
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 import ForumRoundedIcon from '@mui/icons-material/ForumRounded';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
-import SlideIcon from '../playlists/SlideIcon';
+import SlideIcon from './SlideIcon';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
-import yoshiAvatar from '../../images/yoshi.png';
-
 const pages = [
-  {component: HomeIcon, route: '/'},
-  {component: LibraryMusicIcon, route: '/playlists'},
-  {component: ForumRoundedIcon, route: '/messages'},
-  {component: Diversity3Icon, route: '/friends'},
+  { component: HomeIcon, route: '/' },
+  { component: LibraryMusicIcon, route: '/playlists' },
+  { component: ForumRoundedIcon, route: '/messages' },
+  { component: Diversity3Icon, route: '/friends' },
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
+const LoginButton = () => {
+  const { loginWithRedirect } = useAuth0();
+
+  return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
+};
+
+const LogoutButton = ({ handleCloseUserMenu }) => {
+  const { logout } = useAuth0();
+
+  return (
+    <Button onClick={() => {
+      logout({ returnTo: window.location.origin });
+      handleCloseUserMenu();
+    }}>
+      Log Out
+    </Button >
+  );
+};
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const { user, isAuthenticated } = useAuth0();
 
+  // #region event handlers
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -48,6 +67,7 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  // #endregion
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#FFFFFF', color: '#394149' }}>
@@ -152,33 +172,33 @@ export default function Header() {
             </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="yxshimusic" src={ `${yoshiAvatar}` } />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            {isAuthenticated ?
+              <>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt={`${user.nickname}`} src={`${user.picture}`} />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem><LogoutButton handleCloseUserMenu={handleCloseUserMenu} /></MenuItem>
+                </Menu>
+              </>
+              : <LoginButton />}
           </Box>
         </Toolbar>
       </Container>

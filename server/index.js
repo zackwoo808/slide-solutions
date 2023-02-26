@@ -1,9 +1,11 @@
+// #region app setup
 const cors = require('cors');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const fileUpload = require('multer');
 const { Readable } = require('stream');
+const { auth, requiredScopes } = require('express-oauth2-jwt-bearer');
 
 const {
   getTrack,
@@ -11,7 +13,7 @@ const {
   getAllPlaylists,
   getAllPlaylistTracks,
 } = require('./lib/stream');
-const { addPlaylist } = require('./lib/playlist');
+const { addPlaylist, deletePlaylist } = require('./lib/playlist');
 const { createTrackEntry, uploadTrack } = require('./lib/upload');
 
 const PORT = process.env.PORT || 3001;
@@ -24,14 +26,69 @@ app.use(cors({
 }));
 // parse application/json
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
+// #endregion
 
+// #region public API setup
 app.get('/api/welcome-message', (req, res) => {
-  res.json({ message: 'welcome home, homie!' });
+  res.json({
+    message: 'Your music production network. All on one platform.'
+  });
+});
+// #endregion
+
+// #region private API setup
+// Authorization middleware. When used, the Access Token must
+// exist and be verified against the Auth0 JSON Web Key Set.
+const checkJwt = auth({
+  audience: process.env.SERVER_ENDPOINT,
+  issuerBaseURL: process.env.AUTH0_DOMAIN,
 });
 
-app.get('/playlists/:userId', async (req, res) => {
-  const { userId } = req.params;
+app.get('/private-test', checkJwt, (req, res) => {
+  res.json('hi');
+});
+
+app.post('/playlists/add', checkJwt, async (req, res) => {
+  const { body: { title } } = req;
+  const userId = req?.auth?.payload?.sub;
+
+  try {
+    await addPlaylist(userId, title);
+    const updatedPlaylists = await getAllPlaylists(userId);
+
+    res
+      .status(200)
+      .json({ playlists: updatedPlaylists })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .json(err);
+  }
+});
+
+app.post('/playlists/delete', checkJwt, async (req, res) => {
+  const { body: { title } } = req;
+  const userId = req?.auth?.payload?.sub;
+
+  try {
+    await deletePlaylist(userId, title);
+    const updatedPlaylists = await getAllPlaylists(userId);
+
+    res
+      .status(200)
+      .json({ playlists: updatedPlaylists })
+  } catch (err) {
+    res
+      .status(err.status || 500)
+      .json(err);
+  }
+});
+
+
+app.get('/playlists', checkJwt, async (req, res) => {
+  const userId = req?.auth?.payload?.sub;
+
   try {
     const playlists = await getAllPlaylists(userId);
     res
@@ -47,7 +104,7 @@ app.get('/playlists/:userId', async (req, res) => {
   }
 });
 
-app.get('/playlists/:playlistId/tracks', async (req, res) => {
+app.get('/playlists/:playlistId/tracks', checkJwt, async (req, res) => {
   const { playlistId } = req.params;
 
   try {
@@ -98,7 +155,7 @@ app.get('/audio/:trackKey', (req, res) => {
   });
 });
 
-app.get('/download/:trackKey', async (req, res) => {
+app.get('/download/:trackKey', checkJwt, async (req, res) => {
   const promise = new Promise((resolve, reject) => {
     const { params: { trackKey } } = req;
     getTrack(trackKey, (err, response) => {
@@ -132,25 +189,9 @@ app.get('/download/:trackKey', async (req, res) => {
       .json(err));
 });
 
-app.post('/playlists/add', async (req, res) => {
-  const { body: { title }, user: { id = 2 } = {} } = req;
-
-  try {
-    await addPlaylist(id, title);
-    const updatedPlaylists = await getAllPlaylists(id);
-
-    res
-      .status(200)
-      .json({ playlists: updatedPlaylists })
-  } catch (err) {
-    res
-      .status(err.status || 500)
-      .json(err);
-  }
-});
-
-app.post('/upload', fileUpload().single('file'), (req, res) => {
-  const { body: { title, creators, genre, key, BPM, type, playlistId }, file, user: { id: userId = 2 } = {} } = req;
+app.post('/upload', checkJwt, fileUpload().single('file'), (req, res) => {
+  const { body: { title, creators, genre, key, BPM, type, playlistId }, file } = req;
+  const userId = req?.auth?.payload?.sub;
 
   uploadTrack(file, async (err, response) => {
     if (err || !response) {
@@ -188,6 +229,7 @@ app.post('/upload', fileUpload().single('file'), (req, res) => {
     }
   });
 });
+// #endregion
 
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

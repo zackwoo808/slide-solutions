@@ -1,6 +1,7 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Howl, Howler } from 'howler';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import '../../stylesheets/App.css';
 import '../../stylesheets/Playlists.css';
@@ -15,6 +16,8 @@ import UploadTrackDialog from './UploadTrackDialog';
 
 export default function PlaylistController() {
   // #region state management
+  const { getAccessTokenSilently } = useAuth0();
+
   const [currentTrack, setCurrentTrack] = useState();
   const [activeSoundsPlaylist, setActiveSoundsPlaylist] = useState([]);
   const [volumeLevel, setVolumeLevel] = useState(50);
@@ -202,14 +205,19 @@ export default function PlaylistController() {
 
   const handleUploadTrack = useCallback(async (formData) => {
     try {
-      let response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(`${process.env.REACT_APP_AWS_EC2_ENDPOINT}/upload`, {
         method: 'POST',
         cache: 'no-cache',
-        body: formData
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
-      response = await response.json();
-      dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: response.data, title: activePlaylist.title, id: activePlaylist.id }});
+      const data = await response.json();
+      dispatch({ type: 'UPDATE_ACTIVE_PLAYLIST', data: { tracks: data.data, title: activePlaylist.title, id: activePlaylist.id }});
 
       return response;
     } catch (err) {
@@ -217,6 +225,7 @@ export default function PlaylistController() {
     }
   }, [activePlaylist]);
   // #endregion
+
   return (
     <div className={`playlists__controller ${isPlayerVisible ? 'playlists__controller--visible' : ''}`}>
       <div className="playlists__active-tracks">
