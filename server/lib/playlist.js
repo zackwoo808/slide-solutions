@@ -2,6 +2,10 @@ const sql = require('./db');
 
 async function addPlaylist(userId, title) {
   try {
+    /**
+     * Attempt to create a "Library" playlist by default for every user
+     * that contains every song from every playlist.
+     */
     // const response = await sql `
     //   select exists(select p.title
     //   from public.playlists as p
