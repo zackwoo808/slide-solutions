@@ -9,12 +9,13 @@ import DownloadIcon from '@mui/icons-material/Download';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function Track({ index, track: { title, music_key, s3_key, bpm, creators }, onPause, onPlay }) {
+export default function Track({ index, track: { title, music_key, s3_key, bpm, creators, type }, onPause, onPlay }) {
   const { getAccessTokenSilently } = useAuth0();
   // #region state management
   const [anchorEl, setAnchorEl] = useState(null);
@@ -77,19 +78,20 @@ export default function Track({ index, track: { title, music_key, s3_key, bpm, c
   // #endregion helper methods
 
   return (
-    <ListItem key={index} sx={{ display: 'flex', borderTop: index === 0 ? '1px solid rgba(0, 0, 0, 0.25)' : 'none', borderBottom: '1px solid rgba(0, 0, 0, 0.25)', fontWeight: '700', fontSize: '16px', height: '60px', }}>
-      <IconButton sx={{ flex: '0 1 auto', marginRight: '12px' }} id="js-track-play-pause" aria-label="play/pause track" onClick={onTrackPlaybackClick}>
+    <TableRow key={index} sx={{ borderTop: index === 0 ? '1px solid rgba(0, 0, 0, 0.25)' : 'none', borderBottom: '1px solid rgba(0, 0, 0, 0.25)', fontWeight: '700', fontSize: '16px', height: '60px', }}>
+      <IconButton sx={{ flex: '0 1 auto', marginRight: '12px', height: '60px' }} id="js-track-play-pause" aria-label="play/pause track" onClick={onTrackPlaybackClick}>
         {index === currentTrackIndex && isPlaying ? <PauseIcon /> : <PlayCircleIcon />}
       </IconButton>
-      <p title={title} style={{ flex: '0 1 20%', marginRight: '20px' }}>{title}</p>
-      <div title={creators} className="track__creators">{creators}</div>
-      <p style={{ flex: '0 1 20%' }}>{bpm}</p>
-      <p style={{ flex: '1 1 20%' }}>{music_key}</p>
-      <IconButton sx={{ flexBasis: '0 1 auto' }} aria-label="more info" onClick={onMoreInfoOpen}><MoreHorizIcon /></IconButton>
+      <TableCell title={title} style={{ marginRight: '20px' }}>{title}</TableCell>
+      <TableCell title={creators} className="track__creators">{creators}</TableCell>
+      <TableCell>{type}</TableCell>
+      <TableCell>{bpm}</TableCell>
+      <TableCell>{music_key}</TableCell>
+      <IconButton sx={{ height: '60px' }} aria-label="more info" onClick={onMoreInfoOpen}><MoreHorizIcon /></IconButton>
       <Menu id="basic-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={onMoreInfoClose} MenuListProps={{ 'aria-labelledby': 'basic-button' }} >
         <MenuItem sx={{ overflow: 'scroll' }} divider={true}>Creators: {creators}</MenuItem>
         <MenuItem onClick={onDownloadClick}><DownloadIcon /> Download</MenuItem>
       </Menu>
-    </ListItem>
+    </TableRow>
   );
 }
