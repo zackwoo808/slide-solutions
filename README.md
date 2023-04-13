@@ -33,5 +33,5 @@ This project hosts the client and server code necessary to run the demo app for 
 - ```npm run dev``` will start the react client on port 3000.
 
 ## Deployment
-- It's up to you how you'd like to deploy this app to production. Until now, we've used AWS/Auth0 for simple deployments, but haven't achieved production-level coordination and setup.
+- It's up to you how you'd like to deploy this app to production. Until now, we've used AWS for server deployments and Firebase for client hosting. We haven't achieved production-level coordination and setup.
 - Missing variables in the `.envrc` will need to be filled in with the ones you generate from your own local development environment.
