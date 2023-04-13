@@ -3,6 +3,7 @@ export local LOCAL_ENV=dev # dev/int
 export AWS_DEFAULT_REGION=us-west-1
 export AWS_S3_BUCKET_NAME=slide-solutions-demo
 export REACT_APP_AWS_EC2_ENDPOINT=
+export AUTH0_DOMAIN=
 
 # local DB
 export PGDATABASE=
@@ -18,10 +19,17 @@ if [ $LOCAL_ENV = 'dev' ]; then
   export AWS_ACCESS_KEY_ID=test
   export AWS_SECRET_ACCESS_KEY=test
   export AWS_S3_ENDPOINT=http://localhost:4566
+
+  export REACT_APP_AUTH0_CLIENT_ID=
+  export REACT_APP_AUTH0_DOMAIN=
 else
   echo 'using int vars'
   export NODE_ENV=int
 
-  export AWS_ACCESS_KEY_ID=
-  export AWS_SECRET_ACCESS_KEY=
+  export AWS_ACCESS_KEY_ID=test
+  export AWS_SECRET_ACCESS_KEY=test
+  export AWS_S3_ENDPOINT=http://localhost:4566
+
+  export REACT_APP_AUTH0_CLIENT_ID=
+  export REACT_APP_AUTH0_DOMAIN=
 fi
