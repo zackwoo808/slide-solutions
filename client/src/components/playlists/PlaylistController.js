@@ -9,6 +9,11 @@ import '../../stylesheets/Playlists.css';
 import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 import Player from '../player/Player';
 import Track from './Track';
@@ -238,11 +243,23 @@ export default function PlaylistController() {
                 <UploadTrackDialog playlistId={activePlaylist.id} handleUploadTrack={handleUploadTrack} />
               </div>
               {activePlaylist?.tracks?.length
-                ? <List sx={{ overflow: 'scroll' }}>
-                    {activePlaylist.tracks.map((track, index) => (
-                      <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
-                    ))}
-                  </List>
+                ? <Table sx={{ overflow: 'scroll', maxWidth: '100%' }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell></TableCell>
+                        <TableCell>Title</TableCell>
+                        <TableCell>Creators</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>BPM</TableCell>
+                        <TableCell>Key</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody
+                      children={activePlaylist.tracks.map((track, index) => (
+                        <Track key={track.track_id} index={index} track={track} currentTrack={currentTrack} onPlay={onPlay} onPause={onPause} />
+                      ))}
+                    />
+                  </Table>
                 : <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>Add Tracks</div>
               }
       </div>

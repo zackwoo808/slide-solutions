@@ -50,6 +50,7 @@ async function getAllPlaylistTracks(playlistId) {
         t.user_id,
         t.s3_key,
         t.title,
+        t.type,
         t.bpm,
         t.creators,
         t.music_key
