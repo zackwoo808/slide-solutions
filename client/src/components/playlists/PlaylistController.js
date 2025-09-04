@@ -8,7 +8,6 @@ import '../../stylesheets/Playlists.css';
 
 import ArrowBackIosNewSharpIcon from '@mui/icons-material/ArrowBackIosNewSharp';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
